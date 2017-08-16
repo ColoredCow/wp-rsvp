@@ -35,5 +35,42 @@ Version: 0.1
 	}
 
 	function event_and_guest_management(){
+<<<<<<< HEAD
 		require_once("add_new_event.php");
 	}
+=======
+		echo "Hello";		
+	}
+
+	function create_plugin_database_table() {
+		global $wpdb;
+		$events_table_name = $wpdb->prefix . 'events';
+		$guests_table_name = $wpdb->prefix . 'guests';
+
+		$query_create_events_table = "CREATE TABLE $events_table_name (
+			event_id mediumint(5)  NOT NULL AUTO_INCREMENT,
+			event_name varchar(50) NOT NULL,
+			event_theme varchar(50) NOT NULL,
+			event_date date NOT NULL,
+			event_venue varchar(250) NOT NULL,
+			PRIMARY KEY  (event_id)
+		);";
+
+		$query_create_guests_table = "CREATE TABLE $guests_table_name (
+			guest_id mediumint(9)  NOT NULL AUTO_INCREMENT,
+			guest_name varchar(50) NOT NULL,
+			guest_email varchar(50) NOT NULL,
+			guest_phone_number int(10) NOT NULL,
+			guest_gender varchar(50) NOT NULL,
+			guest_category varchar(50) NOT NULL DEFAULT 'approved',
+			PRIMARY KEY  (guest_id)
+		);";
+
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $query_create_events_table );
+		dbDelta( $query_create_guests_table );
+	}
+	 
+	register_activation_hook( __FILE__, 'create_plugin_database_table' );
+>>>>>>> e9c4e5f58065608f8bc25e4bbb86b0ae72519f84
