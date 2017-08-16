@@ -34,12 +34,8 @@ Version: 0.1
 		wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans');
 	}
 
-	function event_and_guest_management(){
-<<<<<<< HEAD
+	function event_and_guest_management() {
 		require_once("add_new_event.php");
-	}
-=======
-		echo "Hello";		
 	}
 
 	function create_plugin_database_table() {
@@ -73,4 +69,3 @@ Version: 0.1
 	}
 	 
 	register_activation_hook( __FILE__, 'create_plugin_database_table' );
->>>>>>> e9c4e5f58065608f8bc25e4bbb86b0ae72519f84
