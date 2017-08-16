@@ -23,6 +23,7 @@ Version: 0.1
 		wp_enqueue_script( 'cc-bootstrap4-script', plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap4.min.js', array( 'jquery'), '1.0.0', true);
 		wp_enqueue_script( 'cc-bootstrap-tether', 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
 		wp_enqueue_script( 'cc-fontawesome-icons', 'https://use.fontawesome.com/ffc2c94a85.js');
+		wp_enqueue_script( 'main', plugin_dir_url( __FILE__ ).'/src/js/main.js', array( 'jquery'), '1.0.0', true);
 		wp_localize_script( 'main', 'PARAMS', array( 'ajaxurl' => admin_url('admin-ajax.php') ) );
 	}
 	
@@ -37,6 +38,27 @@ Version: 0.1
 	function event_and_guest_management() {
 		require_once("add_new_event.php");
 	}
+
+	function add_event() {
+		if(isset($_POST['event_name'])){
+			$event_name=$_POST['event_name'];
+			$event_theme=$_POST['event_theme'];
+			$event_date=$_POST['event_date'];
+			$event_venue=$_POST['event_venue'];
+			
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'events';
+			$wpdb->insert( $table_name, array(
+				'event_name' => $event_name,
+				'event_theme' => $event_theme,
+				'event_date' => $event_date,
+				'event_venue' => $event_venue,
+			) );		       
+	   	}
+	}
+
+	add_action('wp_ajax_add_event','add_event');
+	add_action('wp_ajax_nopriv_add_event','add_event');
 
 	function create_plugin_database_table() {
 		global $wpdb;
@@ -69,3 +91,5 @@ Version: 0.1
 	}
 	 
 	register_activation_hook( __FILE__, 'create_plugin_database_table' );
+
+?>
