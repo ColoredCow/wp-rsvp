@@ -1,5 +1,5 @@
 <div class="container">
-	<div>Add New Guest </div>
+	<h2>Add New Guest </h2>
 	<P>You Can Add your guest by Submitting the given form.The guest will added to your guest list so that you can send an invite through Email for the guest.</P>
 	<hr>
 	<div class="row">
@@ -8,7 +8,7 @@
 				<div class="form-group">
 					<div class="col-lg-12">
 						<label for="guest-name" class="form-control-label">
-							<div>Guest Name:</div>
+							Guest Name:
 						</label>
 						<input type="text" class="form-control" placeholder="Enter Guest Name" name="guest_name" id="guest_name" maxlength="50" required>
 					</div>
@@ -16,23 +16,23 @@
 				<div class="form-group">
 					<div class="col-lg-12">
 						<label for="guest-email" class="form-control-label">
-							<div>Email-ID:</div>
+							Email-ID:
 						</label>
-						<input type="text" class="form-control" placeholder="Enter Guest Email-ID" name="guest_email_id" id="guest_email_id" maxlength="50" required>
+						<input type="email" class="form-control" placeholder="Enter Guest Email-ID" name="guest_email_id" id="guest_email_id" maxlength="50" required>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<label for="guest-number" class="form-control-label">
-							<div>Mobile Number:</div>
+							Mobile Number:
 						</label>
-						<input type="text" class="form-control"  placeholder="Enter Guest Mobile Number" name="guest_mobile_number" id="guest_mobile_number" required>
+						<input type="number"  pattern="[0-10]" class="form-control"  placeholder="Enter Guest Mobile Number" name="guest_mobile_number" id="guest_mobile_number" required>
 					</div>
 				</div>  
 				<div class="form-group">
 					<div class="col-lg-12">
 						<label for="guest-gender" class="form-control-label">
-							<div>Gender</div>
+							Gender
 						</label>
 						<label class="custom-control custom-radio">
 							<input name="guest_gender" value="Male" type="radio" class="custom-control-input" required="required">
