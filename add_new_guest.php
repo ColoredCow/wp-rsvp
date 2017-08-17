@@ -15,7 +15,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-lg-12">
-						<label for="guest-email" class="form-control-label">
+						<label for="guest_email_id" class="form-control-label">
 							Email-ID:
 						</label>
 						<input type="email" class="form-control" placeholder="Enter Guest Email-ID" name="guest_email_id" id="guest_email_id" maxlength="50" required>
@@ -23,7 +23,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-lg-12">
-						<label for="guest-number" class="form-control-label">
+						<label for="guest_mobile_number" class="form-control-label">
 							Mobile Number:
 						</label>
 						<input type="number"  pattern="[0-10]" class="form-control"  placeholder="Enter Guest Mobile Number" name="guest_mobile_number" id="guest_mobile_number" required>
