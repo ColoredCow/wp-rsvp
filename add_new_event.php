@@ -14,7 +14,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-lg-12">
-							<label for="event-name" class="form-control-label">
+							<label for="event-theme" class="form-control-label">
 								Event Theme:
 							</label>
 							<input type="text" class="form-control" placeholder="Theme of Event" name="event_theme" id="event_theme" maxlength="50" required>
