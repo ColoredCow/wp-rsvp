@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
        if(!requestForm[0].checkValidity()){
         requestForm[0].reportValidity();
           return; 
-        }else{  
+        } else {  
           ajax_add_guest_form();
           $('#add_guest_form').trigger('reset');
         } 
