@@ -14,6 +14,7 @@ Version: 0.1
 	function menu_pages(){
 	    add_menu_page('RSVP Invitation', 'RSVP Invitation', 'manage_options', 'rsvp_invitation','', 'dashicons-clipboard');
         add_submenu_page( 'rsvp_invitation', 'Create Event Page', 'Create Event','manage_options', 'rsvp_invitation', 'add_event_page');
+        add_submenu_page( 'rsvp_invitation', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
         add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
 
 	}
@@ -28,6 +29,7 @@ Version: 0.1
 	
 	function cc_plugin_styles(){
 		wp_enqueue_style( 'cc-bootstrap4-style', plugin_dir_url( __FILE__ ).'/dist/lib/css/bootstrap4.min.css');
+		wp_enqueue_style( 'custom-style', plugin_dir_url( __FILE__ ).'/src/css/style.css');
 		wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans');
 	}
 
@@ -37,6 +39,11 @@ Version: 0.1
 
 	function add_guest_page() {
 	 	require_once("add_new_guest.php");
+	}
+
+
+	function event_list_page() {
+	 	require_once("show_event.php");
 	}
 
 	function create_plugin_database_table() {
@@ -112,5 +119,37 @@ Version: 0.1
     }
 	add_action('wp_ajax_add_guest','add_guest');
 	add_action('wp_ajax_nopriv_add_guest','add_guest');
+
+
+	function show_approved_guest(){
+	    global $wpdb;
+		$table_name = $wpdb->prefix . 'events';
+        $result = $wpdb->get_results ( "SELECT * FROM $table_name" );
+         
+         foreach ( $result as $page ){
+		        $output='';
+			    $event_name = $page->event_name;
+			    $event_theme = $page->event_theme;
+			    $event_venue = $page->event_venue;
+			    $date = $page->event_date;
+	            $modify_date = date('d-M-Y', strtotime($date));
+	            $output .='<table>
+	                           <thead>  
+	                                <tr>  
+									    <th>'.$event_name.'</th>
+									    <th>'.$event_theme.'</th>
+									    <th>'.$event_venue.'</th>
+									    <th>'.$modify_date.'</th>
+	                                </tr> 
+	                           </thead> 
+	                       </table>';
+	           echo $output;
+            }
+      die();
+    }
+
+	add_action('wp_ajax_show_approved_guest','show_approved_guest');
+	add_action('wp_ajax_nopriv_show_approved_guest','show_approved_guest');
+
 
 ?>
