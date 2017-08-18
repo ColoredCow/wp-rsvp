@@ -12,7 +12,6 @@ Version: 0.1
 	add_action( 'admin_enqueue_scripts', 'cc_plugin_styles' );
 	
 	function menu_pages(){
-		
 	    add_menu_page('RSVP Invitation', 'RSVP Invitation', 'manage_options', 'rsvp_invitation','', 'dashicons-clipboard');
         add_submenu_page( 'rsvp_invitation', 'Create Event Page', 'Create Event','manage_options', 'rsvp_invitation', 'add_event_page');
         add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
@@ -20,9 +19,6 @@ Version: 0.1
 	}
 	
 	function cc_plugin_scripts(){
-		// if( $hook != 'toplevel_page_event_and_guest_management' ) {
-		// 	return;
-		// }
 		wp_enqueue_script( 'cc-bootstrap4-script', plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap4.min.js', array( 'jquery'), '1.0.0', true);
 		wp_enqueue_script( 'cc-bootstrap-tether', 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
 		wp_enqueue_script( 'cc-fontawesome-icons', 'https://use.fontawesome.com/ffc2c94a85.js');
@@ -31,20 +27,17 @@ Version: 0.1
 	}
 	
 	function cc_plugin_styles(){
-		// if( $hook != 'toplevel_page_event_and_guest_management' ) {
-		// 	return;
-		// }
 		wp_enqueue_style( 'cc-bootstrap4-style', plugin_dir_url( __FILE__ ).'/dist/lib/css/bootstrap4.min.css');
 		wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans');
 	}
 
 	function add_event_page() {
 	 	require_once("add_new_event.php");
-	 }
+	}
 
 	function add_guest_page() {
 	 	require_once("add_new_guest.php");
-	 }
+	}
 
 	function create_plugin_database_table() {
 		global $wpdb;
@@ -80,7 +73,7 @@ Version: 0.1
 
 
 	function add_event() {
-		if(isset($_POST['event_name'])){
+		if(isset($_POST['event_name'])&&isset($_POST['event_theme'])&&isset($_POST['event_date'])&&isset($_POST['event_venue'])){
 			$event_name=$_POST['event_name'];
 			$event_theme=$_POST['event_theme'];
 			$event_date=$_POST['event_date'];
@@ -101,7 +94,7 @@ Version: 0.1
 	add_action('wp_ajax_nopriv_add_event','add_event');
 
 	function add_guest(){
-      if(isset($_POST['guest_name'])){
+      if(isset($_POST['guest_name'])&&isset($_POST['guest_email_id'])&&isset($_POST['guest_phone_number'])&&isset($_POST['guest_gender'])){
 	   $guest_name=$_POST['guest_name'];
 	   $guest_email=$_POST['guest_email_id'];
 	   $guest_phone_number=$_POST['guest_mobile_number'];
