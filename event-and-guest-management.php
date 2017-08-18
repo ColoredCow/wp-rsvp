@@ -1,47 +1,50 @@
 <?php
 /*
-Plugin Name: RSVP Invitation
-Description: Plugin for managing events and guests
+Plugin Name: RSVP Invitation Plugin
+Description: Plugin for managing events and guests.
 Author: ColoredCow
 Author URI: www.coloredcow.com
 Version: 0.1
 */
-    add_action('admin_menu', 'menu_pages');
+
+	add_action('admin_menu', 'menu_pages');
 	add_action( 'admin_enqueue_scripts', 'cc_plugin_scripts' );
 	add_action( 'admin_enqueue_scripts', 'cc_plugin_styles' );
 	
 	function menu_pages(){
-		add_menu_page('RSVP Invitation', 'RSVP Invitation', 'manage_options', 'event_and_guest_management', 'event_and_guest_management');
-		add_submenu_page('event_and_guest_management', 'Add New Guest', 'Add New Guest' , 'manage_options', 'add_new_guest', 'add_new_guest');
+		
+	    add_menu_page('RSVP Invitation', 'RSVP Invitation', 'manage_options', 'rsvp_invitation','', 'dashicons-clipboard');
+        add_submenu_page( 'rsvp_invitation', 'Create Event Page', 'Create Event','manage_options', 'rsvp_invitation', 'add_event_page');
+        add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
+
 	}
 	
-	function cc_plugin_scripts($hook){
-		if( $hook != 'toplevel_page_event_and_guest_management' ) {
-			return;
-		}
+	function cc_plugin_scripts(){
+		// if( $hook != 'toplevel_page_event_and_guest_management' ) {
+		// 	return;
+		// }
 		wp_enqueue_script( 'cc-bootstrap4-script', plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap4.min.js', array( 'jquery'), '1.0.0', true);
 		wp_enqueue_script( 'cc-bootstrap-tether', 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
 		wp_enqueue_script( 'cc-fontawesome-icons', 'https://use.fontawesome.com/ffc2c94a85.js');
 		wp_enqueue_script( 'main', plugin_dir_url( __FILE__ ).'/src/js/main.js', array( 'jquery'), '1.0.0', true);
-		wp_localize_script( 'main', 'PARAMS', array( 'ajaxurl' => admin_url('admin-ajax.php')) );
+		wp_localize_script( 'main', 'PARAMS', array( 'ajaxurl' => admin_url('admin-ajax.php') ) );
 	}
 	
-	function cc_plugin_styles($hook){
-		if( $hook != 'toplevel_page_event_and_guest_management' ) {
-			return;
-		}
+	function cc_plugin_styles(){
+		// if( $hook != 'toplevel_page_event_and_guest_management' ) {
+		// 	return;
+		// }
 		wp_enqueue_style( 'cc-bootstrap4-style', plugin_dir_url( __FILE__ ).'/dist/lib/css/bootstrap4.min.css');
 		wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans');
 	}
 
-	
-	function event_and_guest_management(){
-		require_once("add_new_guest.php");
-	}
+	function add_event_page() {
+	 	require_once("add_new_event.php");
+	 }
 
-	function add_new_guest(){
-		require_once("add_new_guest.php");
-	}
+	function add_guest_page() {
+	 	require_once("add_new_guest.php");
+	 }
 
 	function create_plugin_database_table() {
 		global $wpdb;
@@ -76,7 +79,28 @@ Version: 0.1
 	register_activation_hook( __FILE__, 'create_plugin_database_table' );
 
 
-    function add_guest(){
+	function add_event() {
+		if(isset($_POST['event_name'])){
+			$event_name=$_POST['event_name'];
+			$event_theme=$_POST['event_theme'];
+			$event_date=$_POST['event_date'];
+			$event_venue=$_POST['event_venue'];
+			
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'events';
+			$wpdb->insert( $table_name, array(
+				'event_name' => $event_name,
+				'event_theme' => $event_theme,
+				'event_date' => $event_date,
+				'event_venue' => $event_venue,
+			) );		       
+	   	}
+	}
+
+	add_action('wp_ajax_add_event','add_event');
+	add_action('wp_ajax_nopriv_add_event','add_event');
+
+	function add_guest(){
       if(isset($_POST['guest_name'])){
 	   $guest_name=$_POST['guest_name'];
 	   $guest_email=$_POST['guest_email_id'];
@@ -86,7 +110,6 @@ Version: 0.1
           global $wpdb;
           $table_name = $wpdb->prefix . 'guests';
 		  $wpdb->insert( $table_name, array(
-
 			   'guest_name' => $guest_name,
 			   'guest_email' => $guest_email,
 			   'guest_phone_number' => $guest_phone_number,
@@ -94,7 +117,7 @@ Version: 0.1
 			));
 		}
     }
-
 	add_action('wp_ajax_add_guest','add_guest');
 	add_action('wp_ajax_nopriv_add_guest','add_guest');
-?>	
+
+?>
