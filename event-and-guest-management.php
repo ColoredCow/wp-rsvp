@@ -12,10 +12,10 @@ Version: 0.1
 	add_action( 'admin_enqueue_scripts', 'cc_plugin_styles' );
 	
 	function menu_pages(){
-	    add_menu_page('RSVP Invitation', 'RSVP Invitation', 'manage_options', 'rsvp_invitation','', 'dashicons-clipboard');
-        add_submenu_page( 'rsvp_invitation', 'Create Event Page', 'Create Event','manage_options', 'rsvp_invitation', 'add_event_page');
-        add_submenu_page( 'rsvp_invitation', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
-        add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
+		add_menu_page('RSVP Invitation', 'RSVP Invitation', 'manage_options', 'rsvp_invitation','', 'dashicons-clipboard');
+		add_submenu_page( 'rsvp_invitation', 'Create Event Page', 'Create Event','manage_options', 'rsvp_invitation', 'add_event_page');
+		add_submenu_page( 'rsvp_invitation', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
+		add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
 
 	}
 	
@@ -34,16 +34,16 @@ Version: 0.1
 	}
 
 	function add_event_page() {
-	 	require_once("add_new_event.php");
+		require_once("add_new_event.php");
 	}
 
 	function add_guest_page() {
-	 	require_once("add_new_guest.php");
+		require_once("add_new_guest.php");
 	}
 
 
 	function event_list_page() {
-	 	require_once("show_event.php");
+		require_once("show_event.php");
 	}
 
 	function create_plugin_database_table() {
@@ -101,55 +101,53 @@ Version: 0.1
 	add_action('wp_ajax_nopriv_add_event','add_event');
 
 	function add_guest(){
-      if(isset($_POST['guest_name'])&&isset($_POST['guest_email_id'])&&isset($_POST['guest_phone_number'])&&isset($_POST['guest_gender'])){
-	   $guest_name=$_POST['guest_name'];
-	   $guest_email=$_POST['guest_email_id'];
-	   $guest_phone_number=$_POST['guest_mobile_number'];
-	   $guest_gender=$_POST['guest_gender'];
- 
-          global $wpdb;
-          $table_name = $wpdb->prefix . 'guests';
-		  $wpdb->insert( $table_name, array(
-			   'guest_name' => $guest_name,
-			   'guest_email' => $guest_email,
-			   'guest_phone_number' => $guest_phone_number,
-			   'guest_gender' => $guest_gender,	 
+		if(isset($_POST['guest_name'])&&isset($_POST['guest_email_id'])&&isset($_POST['guest_phone_number'])&&isset($_POST['guest_gender'])){
+			$guest_name=$_POST['guest_name'];
+			$guest_email=$_POST['guest_email_id'];
+			$guest_phone_number=$_POST['guest_mobile_number'];
+			$guest_gender=$_POST['guest_gender'];
+
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'guests';
+			$wpdb->insert( $table_name, array(
+				'guest_name' => $guest_name,
+				'guest_email' => $guest_email,
+				'guest_phone_number' => $guest_phone_number,
+				'guest_gender' => $guest_gender,	 
 			));
 		}
-    }
+	}
 	add_action('wp_ajax_add_guest','add_guest');
 	add_action('wp_ajax_nopriv_add_guest','add_guest');
 
 
 	function show_approved_guest(){
-	    global $wpdb;
+		global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
-        $result = $wpdb->get_results ( "SELECT * FROM $table_name" );
-         
-         foreach ( $result as $page ){
-		        $output='';
-			    $event_name = $page->event_name;
-			    $event_theme = $page->event_theme;
-			    $event_venue = $page->event_venue;
-			    $date = $page->event_date;
-	            $modify_date = date('d-M-Y', strtotime($date));
-	            $output .='<table>
-	                           <thead>  
-	                                <tr>  
-									    <th>'.$event_name.'</th>
-									    <th>'.$event_theme.'</th>
-									    <th>'.$event_venue.'</th>
-									    <th>'.$modify_date.'</th>
-	                                </tr> 
-	                           </thead> 
-	                       </table>';
-	           echo $output;
-            }
-      die();
-    }
+		$result = $wpdb->get_results ( "SELECT * FROM $table_name" );
+
+		foreach ( $result as $page ){
+			$output='';
+			$event_name = $page->event_name;
+			$event_theme = $page->event_theme;
+			$event_venue = $page->event_venue;
+			$date = $page->event_date;
+			$modify_date = date('d-M-Y', strtotime($date));
+			$output .='<table>
+							<thead>  
+								<tr>  
+									<th>'.$event_name.'</th>
+									<th>'.$event_theme.'</th>
+									<th>'.$event_venue.'</th>
+									<th>'.$modify_date.'</th>
+								</tr> 
+							</thead> 
+						</table>';
+			echo $output;
+		}
+		wp_die();
+	}
 
 	add_action('wp_ajax_show_approved_guest','show_approved_guest');
 	add_action('wp_ajax_nopriv_show_approved_guest','show_approved_guest');
-
-
 ?>
