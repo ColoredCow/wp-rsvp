@@ -133,16 +133,16 @@ Version: 0.1
 			$event_venue = $page->event_venue;
 			$date = $page->event_date;
 			$modify_date = date('d-M-Y', strtotime($date));
-			$output .='<table>
-							<thead>  
-								<tr>  
-									<th>'.$event_name.'</th>
+			$output .='<table>';
+			$output .='		<thead>';				  
+			$output .='			<tr>';  
+			$output .='				<th>'.$event_name.'</th>
 									<th>'.$event_theme.'</th>
 									<th>'.$event_venue.'</th>
-									<th>'.$modify_date.'</th>
-								</tr> 
-							</thead> 
-						</table>';
+									<th>'.$modify_date.'</th>';
+			$output .='			<tr>';
+			$output .='		<thead>';			  
+			$output .='</table>';
 			echo $output;
 		}
 		wp_die();
