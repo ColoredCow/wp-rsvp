@@ -1,4 +1,4 @@
-<h1> All Events</h1>
+<h1> All Guests</h1>
     <table class="header-table">
        <thead>  
            <tr>  
@@ -9,5 +9,5 @@
            </tr> 
        </thead> 
    </table>
-<div id="show_all_events"></div>
+<div id="show_all_guests"></div>
 	

@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
-  fetch_approve_guest();
+  fetch_all_events();
+  fetch_all_guests();
   $("#add_event").on("click",function() {
     var requestForm=$('#add_event_form');                      
     if(!requestForm[0].checkValidity() ) {
@@ -47,14 +48,26 @@ jQuery(document).ready(function($) {
         });
     }
 
-    function fetch_approve_guest(){
-       var fetch_approve ="action=show_approved_guest";
+    function fetch_all_events(){
+       var fetch_events ="action=show_all_events";
         $.ajax({
            type:'POST',
            url:PARAMS.ajaxurl,
-           data:fetch_approve,
+           data:fetch_events,
            success:function(result){
-              $("#approve_guest").html(result);
+              $("#show_all_events").html(result);
+          }
+      });
+    }
+
+    function fetch_all_guests(){
+       var fetch_guests ="action=show_all_guests";
+        $.ajax({
+           type:'POST',
+           url:PARAMS.ajaxurl,
+           data:fetch_guests,
+           success:function(result){
+              $("#show_all_guests").html(result);
           }
       });
     }

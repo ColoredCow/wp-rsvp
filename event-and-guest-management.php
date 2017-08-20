@@ -16,6 +16,7 @@ Version: 0.1
 		add_submenu_page( 'rsvp_invitation', 'Create Event Page', 'Create Event','manage_options', 'rsvp_invitation', 'add_event_page');
 		add_submenu_page( 'rsvp_invitation', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
 		add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
+		add_submenu_page( 'rsvp_invitation', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 
 	}
 	
@@ -46,6 +47,10 @@ Version: 0.1
 		require_once("show_event.php");
 	}
 
+	function guest_list_page() {
+		require_once("show_guest.php");
+	}
+	
 	function create_plugin_database_table() {
 		global $wpdb;
 		$events_table_name = $wpdb->prefix . 'events';
@@ -121,7 +126,7 @@ Version: 0.1
 	add_action('wp_ajax_nopriv_add_guest','add_guest');
 
 
-	function show_approved_guest(){
+	function show_all_events(){
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_name" );
@@ -148,6 +153,39 @@ Version: 0.1
 		wp_die();
 	}
 
-	add_action('wp_ajax_show_approved_guest','show_approved_guest');
-	add_action('wp_ajax_nopriv_show_approved_guest','show_approved_guest');
+	add_action('wp_ajax_show_all_events','show_all_events');
+	add_action('wp_ajax_nopriv_show_all_events','show_all_events');
+
+	function show_all_guests(){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'guests';
+		$result = $wpdb->get_results ( "SELECT * FROM $table_name" );
+
+		foreach ( $result as $page ){
+			$output='';
+			$guest_name = $page->guest_name;
+			$guest_email = $page->guest_email;
+			$guest_gender = $page->guest_gender;
+			$guest_phone_number = $page->guest_phone_number;
+
+			$output .='<table>
+							<thead>  
+								<tr>  
+									<th>'.$guest_name.'</th>
+									<th>'.$guest_email.'</th>
+									<th>'.$guest_phone_number.'</th>
+									<th>'.$guest_gender.'</th>
+								</tr> 
+							</thead> 
+						</table>';
+			echo $output;
+		}
+		wp_die();
+	}
+
+	add_action('wp_ajax_show_all_guests','show_all_guests');
+	add_action('wp_ajax_nopriv_show_all_guests','show_all_guests');
+
+
+
 ?>
