@@ -1,51 +1,51 @@
 jQuery(document).ready(function($) {
-  fetch_all_events();
-  fetch_all_guests();
-  $("#add_event").on("click",function() {
-    var requestForm=$('#add_event_form');                      
-    if(!requestForm[0].checkValidity() ) {
-      requestForm[0].reportValidity();
-      return;
-    } else {  
-        ajax_add_event_form();
-      $('#add_event_form').trigger('reset');
-    }
-  });
+   fetch_all_guests();
+   fetch_all_events();
 
-  function ajax_add_event_form() {
-    var add_event_form ="action=add_event&"+$('#add_event_form').serialize();
-    $.ajax({
-      type: 'POST',
-      url:PARAMS.ajaxurl,
-      data:add_event_form,
-      success:function(e){
-        alert("event has been added");
-      }
+    $("#add_event").on("click",function() {
+      var requestForm=$('#add_event_form');                      
+        if(!requestForm[0].checkValidity() ) {
+            requestForm[0].reportValidity();
+            return;
+          }  else {  
+              ajax_add_event_form();
+              $('#add_event_form').trigger('reset');
+            }
     });
-  }
+
+    function ajax_add_event_form() {
+      var add_event_form ="action=add_event&"+$('#add_event_form').serialize();
+      $.ajax({
+        type: 'POST',
+        url:PARAMS.ajaxurl,
+        data:add_event_form,
+        success:function(result){
+          document.getElementById("successfull_event_message").innerHTML=result;
+        }
+      });
+    }
 
     $("#add_guest").on("click",function(){
-       var requestForm=$('#add_guest_form');                      
-       if(!requestForm[0].checkValidity()){
-        requestForm[0].reportValidity();
+        var requestForm=$('#add_guest_form');                      
+        if(!requestForm[0].checkValidity()){
+          requestForm[0].reportValidity();
           return; 
         } else {  
-          ajax_add_guest_form();
-          $('#add_guest_form').trigger('reset');
-        } 
+            ajax_add_guest_form();
+            $('#add_guest_form').trigger('reset');
+          } 
     });
 
     function ajax_add_guest_form(){
-     var add_guest_form ="action=add_guest&"+$('#add_guest_form').serialize();
-     console.log(add_guest_form);
-     $.ajax({
-          type: 'POST',
-          url:PARAMS.ajaxurl,
-          data:add_guest_form,
-          success:function(e){
-              alert("Guest has been added");
-            }
-        });
+      var add_guest_form ="action=add_guest&"+$('#add_guest_form').serialize();
+      $.ajax({
+        type: 'POST',
+        url:PARAMS.ajaxurl,
+        data:add_guest_form,
+        success:function(result){
+          document.getElementById("successfull_guest_message").innerHTML=result;
+        }
+      });
     }
 
     function fetch_all_events(){
@@ -68,6 +68,50 @@ jQuery(document).ready(function($) {
            data:fetch_guests,
            success:function(result){
               $("#show_all_guests").html(result);
+          }
+      });
+    }
+
+    $(document).on("click",'.send',function(){
+      var check1=confirm("Are You Sure you want to delete this event?");
+      if (check1==true) {
+        var event_id=$(this).attr('id');
+        delete_event(event_id);
+      }
+    });
+
+
+    function delete_event(event_id){
+      var event_id = event_id;
+      var fetch_request ="action=delete_event_details&event_id="+event_id;
+      $.ajax({
+        type:'POST',
+        url:PARAMS.ajaxurl,
+        data:fetch_request,
+        success:function(result){        
+          fetch_all_events();
+        }
+      });
+    }
+
+    $(document).on("click",'.delete',function(){
+      var check2=confirm("Are You Sure you want to delete this guest?");
+      if (check2==true) {
+        var guest_id=$(this).attr('id');
+        delete_guest(guest_id);
+      }
+    });
+
+
+    function delete_guest(guest_id){
+      var guest_id = guest_id;
+      var delete_request ="action=delete_guest_details&guest_id="+guest_id;
+      $.ajax({
+        type:'POST',
+        url:PARAMS.ajaxurl,
+        data:delete_request,
+        success:function(result){        
+            fetch_all_guests();
           }
       });
     }
