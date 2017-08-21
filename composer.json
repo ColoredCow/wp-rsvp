@@ -1,0 +1,7 @@
+{
+    "name": "coloredcow/rsvp-invitation",
+    "description": "Easy-to-use event management plugin for sending invitation to your guests",
+    "require": {
+        "php": "^5.3.3 || ^7.0"
+    }
+}
