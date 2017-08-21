@@ -4,10 +4,14 @@
 	<hr>
 	<div class="row">
 		<div class="col-lg-7 col-md-7 col-sm-12">
+				<div class="col-lg-7">
+		<p id="msg4"></p>
+		</div>
+
 			<form id="add_guest_form">
 				<div class="form-group">
 					<div class="col-lg-12">
-						<label for="guest-name" class="form-control-label">
+						<label for="guest_name" class="form-control-label">
 							Guest Name:
 						</label>
 						<input type="text" class="form-control" placeholder="Enter Guest Name" name="guest_name" id="guest_name" maxlength="50" required>
@@ -31,7 +35,7 @@
 				</div>  
 				<div class="form-group">
 					<div class="col-lg-12">
-						<label for="guest-gender" class="form-control-label">
+						<label for="guest_gender" class="form-control-label">
 							Gender
 						</label>
 						<label class="custom-control custom-radio">
