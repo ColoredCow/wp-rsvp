@@ -1,13 +1,13 @@
 jQuery(document).ready(function($) {
    fetch_all_guests();
    fetch_all_events();
-  
+
     $("#add_event").on("click",function() {
-     var requestForm=$('#add_event_form');                      
+      var requestForm=$('#add_event_form');                      
         if(!requestForm[0].checkValidity() ) {
-          requestForm[0].reportValidity();
-          return;
-        }  else {  
+            requestForm[0].reportValidity();
+            return;
+          }  else {  
               ajax_add_event_form();
               $('#add_event_form').trigger('reset');
             }
@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
         url:PARAMS.ajaxurl,
         data:add_event_form,
         success:function(result){
-          document.getElementById("msg3").innerHTML=result;
+          document.getElementById("successfull_event_message").innerHTML=result;
         }
       });
     }
@@ -43,7 +43,7 @@ jQuery(document).ready(function($) {
         url:PARAMS.ajaxurl,
         data:add_guest_form,
         success:function(result){
-          document.getElementById("msg4").innerHTML=result;
+          document.getElementById("successfull_guest_message").innerHTML=result;
         }
       });
     }
@@ -84,7 +84,6 @@ jQuery(document).ready(function($) {
     function delete_event(event_id){
       var event_id = event_id;
       var fetch_request ="action=delete_event_details&event_id="+event_id;
-      console.log(fetch_request);
       $.ajax({
         type:'POST',
         url:PARAMS.ajaxurl,
@@ -107,13 +106,13 @@ jQuery(document).ready(function($) {
     function delete_guest(guest_id){
       var guest_id = guest_id;
       var delete_request ="action=delete_guest_details&guest_id="+guest_id;
-       $.ajax({
-          type:'POST',
-          url:PARAMS.ajaxurl,
-          data:delete_request,
-          success:function(result){        
+      $.ajax({
+        type:'POST',
+        url:PARAMS.ajaxurl,
+        data:delete_request,
+        success:function(result){        
             fetch_all_guests();
           }
-        });
+      });
     }
 });

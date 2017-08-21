@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: RSVP Invitation
-Description: Easy-to-use event management plugin for tracking your events, guests, rsvp’s and dozens of other details.
+Plugin Name: RSVP Invitationsss
+Description: Easy-to-use event management plugin for sending invitation to your guests.
 Author: ColoredCow
 Author URI: www.coloredcow.com
 Version: 0.1
@@ -18,9 +18,6 @@ Version: 0.1
 		add_submenu_page( 'rsvp_invitation', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
 		add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
 		add_submenu_page( 'rsvp_invitation', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
-
-
-
 	}
 	
 	function cc_plugin_scripts(){
@@ -36,7 +33,7 @@ Version: 0.1
 	function cc_plugin_styles(){
 		wp_enqueue_style( 'cc-bootstrap4-style', plugin_dir_url( __FILE__ ).'/dist/lib/css/bootstrap4.min.css');
 		wp_enqueue_style( 'custom-style', plugin_dir_url( __FILE__ ).'/src/css/style.css');
-		wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans');
+		wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans|Baloo+Bhaijaan|Quicksand');
 	}
 
 	function add_event_page() {
@@ -66,7 +63,11 @@ Version: 0.1
 			event_name varchar(50) NOT NULL,
 			event_theme varchar(50) NOT NULL,
 			event_date date NOT NULL,
-			event_venue varchar(250) NOT NULL,
+			event_venue varchar(150) NOT NULL,
+			event_address varchar(250) NOT NULL,
+			event_about varchar(150) NOT NULL,
+			event_host varchar(50) NOT NULL,
+			event_time time NOT NULL,
 			PRIMARY KEY  (event_id)
 		);";
 
@@ -95,8 +96,11 @@ Version: 0.1
 			$event_name=$_POST['event_name'];
 			$event_theme=$_POST['event_theme'];
 			$event_date=$_POST['event_date'];
+			$event_address=$_POST['event_address'];
+			$event_time=$_POST['event_time'];
+			$event_about=$_POST['event_about'];
 			$event_venue=$_POST['event_venue'];
-			
+			$event_host=$_POST['event_host'];
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'events';
 			$wpdb->insert( $table_name, array(
@@ -104,11 +108,16 @@ Version: 0.1
 				'event_theme' => $event_theme,
 				'event_date' => $event_date,
 				'event_venue' => $event_venue,
+				'event_address' => $event_address,
+				'event_time' => $event_time,
+				'event_venue' => $event_venue,
+				'event_host' => $event_host,
+				'event_about' => $event_about,
 			) );		       
 	   	      echo '<div class="alert alert-success alert-dismissable">
 	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
 	   	                </a>
-                     <strong>Success!</strong>'.$event_name.' has been added to your event list.
+                     <strong>'.$event_name.' </strong>  has been added to your event list.
                     </div>';    	
 	   	}
 
@@ -126,19 +135,18 @@ Version: 0.1
 		$guest_email=$_POST['guest_email_id'];
 		$guest_phone_number=$_POST['guest_mobile_number'];
 		$guest_gender=$_POST['guest_gender'];
-
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'guests';
 			$wpdb->insert( $table_name, array(
-			'guest_name' => $guest_name,
-			'guest_email' => $guest_email,
-			'guest_phone_number' => $guest_phone_number,
-			'guest_gender' => $guest_gender,	 
+				'guest_name' => $guest_name,
+				'guest_email' => $guest_email,
+				'guest_phone_number' => $guest_phone_number,
+				'guest_gender' => $guest_gender,	 
 			));
 			 echo '<div class="alert alert-success alert-dismissable">
 	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
 	   	                </a>
-                     <strong>Success!</strong>'.$guest_name.' has been added to your guest list.
+                     <strong>'.$guest_name.' </strong>  has been added to your guest list.
                     </div>';
 	    }
 
@@ -152,7 +160,7 @@ Version: 0.1
 
 	function show_all_events(){global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
-		$result = $wpdb->get_results ( "SELECT * FROM $table_name" );
+		$result = $wpdb->get_results ( "SELECT * FROM $table_name ORDER BY event_date ASC" );
 
 		foreach ( $result as $page ){
 			$output='';
@@ -162,14 +170,14 @@ Version: 0.1
 			$event_venue = $page->event_venue;
 			$date = $page->event_date;
 			$modify_date = date('d-M-Y', strtotime($date));
-			$output .='<table>
+			$output .='<table class="table">
 							<thead>  
-								<tr>  
-									<th>'.$event_name.'</th>
-									<th>'.$event_theme.'</th>
-									<th>'.$event_venue.'</th>
-									<th>'.$modify_date.'</th>
-									<th><button type="button" class="btn btn-danger btn-sm send" id='.$event_id.'>Delete</button></th>
+								<tr class="tr">  
+									<th class="th">'.$event_name.'</th>
+									<th class="th">'.$event_theme.'</th>
+									<th class="th">'.$event_venue.'</th>
+									<th class="th">'.$modify_date.'</th>
+									<th class="th"><button type="button" class="btn btn-outline-danger btn-sm send" id='.$event_id.'>Delete</button></th>
 								</tr> 
 							</thead> 
 						</table>';
@@ -228,15 +236,14 @@ Version: 0.1
 			$guest_email = $page->guest_email;
 			$guest_gender = $page->guest_gender;
 			$guest_phone_number = $page->guest_phone_number;
-
-			$output .='<table>
+			$output .='<table class="table">
 							<thead>  
-								<tr>  
-									<th>'.$guest_name.'</th>
-									<th>'.$guest_email.'</th>
-									<th>'.$guest_phone_number.'</th>
-									<th>'.$guest_gender.'</th>
-									<th><button type="button" class="btn btn-danger btn-sm delete" id='.$guest_id.'>Delete</button></th>
+								<tr class="tr">  
+									<th class="th">'.$guest_name.'</th>
+									<th class="th">'.$guest_email.'</th>
+									<th class="th">'.$guest_phone_number.'</th>
+									<th class="th">'.$guest_gender.'</th>
+									<th class="th"><button type="button" class="btn btn-outline-danger btn-sm delete" id='.$guest_id.'>Delete</button></th>
 								</tr> 
 							</thead> 
 						</table>';
