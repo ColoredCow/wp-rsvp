@@ -10,19 +10,19 @@
 				<label for="guest_name" class="form-control-label">
 					<b>Guest Name</b>
 				</label>
-				<input type="text" class="form-control" placeholder="Enter Guest Name" name="guest_name" id="guest_name" maxlength="50" required>
+				<input type="text" class="form-control" placeholder="Guest name*" name="guest_name" id="guest_name" maxlength="50" required>
 			</div>
 			<div class="form-group col-lg-12">
 				<label for="guest_email_id" class="form-control-label">
 					<b>Guest Email-ID</b>
 				</label>
-				<input type="email" class="form-control" placeholder="Enter Guest Email-ID" name="guest_email_id" id="guest_email_id" maxlength="50" required>	
+				<input type="email" class="form-control" placeholder="Guest email*" name="guest_email_id" id="guest_email_id" maxlength="50" required>	
 			</div>
 			<div class="form-group col-lg-12">
 				<label for="guest_mobile_number" class="form-control-label">
 					<b>Guest Mobile Number</b>
 				</label>
-				<input type="tel" pattern="[789][0-9]{9}" class="form-control"  placeholder="Guest Mobile Number" name="guest_mobile_number" id="guest_mobile_number" maxlength="10" required>	
+				<input type="tel" pattern="[789][0-9]{9}" class="form-control"  placeholder="Guest mobile number*" name="guest_mobile_number" id="guest_mobile_number" maxlength="10" required>	
 			</div>  
 			<div class="form-group col-lg-12">
 				<label for="guest_gender" class="form-control-label">
