@@ -1,12 +1,9 @@
 {
     "name": "coloredcow/rsvp",
     "description": "Easy-to-use event management plugin for sending invitation to your guests",
+    "license":"GPL-3.0+",
     "require": {
         "php": "^5.3.3 || ^7.0"
     }
 }
 
-
-{
-    "license": "GPL-3.0+"
-}
