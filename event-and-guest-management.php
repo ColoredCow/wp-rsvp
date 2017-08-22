@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: RSVP Invitations
+Plugin Name: RSVP
 Description: Easy-to-use event management plugin for sending invitation to your guests.
 Author: ColoredCow
 Author URI: www.coloredcow.com
