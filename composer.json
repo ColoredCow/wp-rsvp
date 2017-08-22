@@ -5,3 +5,18 @@
         "php": "^5.3.3 || ^7.0"
     }
 }
+
+ {
+    "authors": [
+        {
+            "name": "Vivek Amola",
+            "email": "vivek.amola@coloredcow.in",
+            "homepage": "http://www.coloredcow.com",
+            "role": "Developer"
+        }
+    ]
+}
+
+{
+    "license": "GPL-3.0+"
+}
