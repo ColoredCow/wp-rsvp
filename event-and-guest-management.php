@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: RSVP Invitationsss
+Plugin Name: RSVP
 Description: Easy-to-use event management plugin for sending invitation to your guests.
 Author: ColoredCow
 Author URI: www.coloredcow.com
@@ -75,7 +75,7 @@ Version: 0.1
 			guest_id mediumint(9)  NOT NULL AUTO_INCREMENT,
 			guest_name varchar(50) NOT NULL,
 			guest_email varchar(50) NOT NULL,
-			guest_phone_number int(10) NOT NULL,
+			guest_phone_number bigint(10) NOT NULL,
 			guest_gender varchar(50) NOT NULL,
 			guest_category varchar(50) NOT NULL DEFAULT 'approved',
 			PRIMARY KEY  (guest_id)
