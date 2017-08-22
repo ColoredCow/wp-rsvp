@@ -6,16 +6,6 @@
     }
 }
 
- {
-    "authors": [
-        {
-            "name": "Vivek Amola",
-            "email": "vivek.amola@coloredcow.in",
-            "homepage": "http://www.coloredcow.com",
-            "role": "Developer"
-        }
-    ]
-}
 
 {
     "license": "GPL-3.0+"
