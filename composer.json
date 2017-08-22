@@ -4,6 +4,9 @@
     "description": "Easy-to-use event management plugin for sending invitation to your guests",
     "license":"GPL-3.0+",
     "version": "1.0",
+    "config" : {
+        "vendor-dir" : "plugins"
+    },
 
     "require": {
         "composer/installers": "~1.0",
