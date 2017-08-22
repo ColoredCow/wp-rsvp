@@ -1,15 +1,16 @@
 {
     "name": "coloredcow/rsvp",
-    "type": "wordpress-plugin",
+    "type": "project",
     "description": "Easy-to-use event management plugin for sending invitation to your guests",
     "license":"GPL-3.0+",
     "version": "1.0",
     "config" : {
-        "vendor-dir" : "plugins"
+        "vendor-dir" : "/path/to/vendors"
+
     },
 
     "require": {
-        "composer/installers": "~1.0",
+      
 
         "php": "^5.3.3 || ^7.0"
     }
