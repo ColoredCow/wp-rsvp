@@ -17,7 +17,7 @@ Version: 0.1
 		add_submenu_page( 'rsvp', 'Create Event Page', 'Create Event','manage_options', 'rsvp', 'add_event_page');
 		add_submenu_page( 'rsvp', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
 		add_submenu_page( 'rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
-		add_submenu_page( 'rsvp_invitation', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
+		add_submenu_page( 'rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 	}
 	
 	function cc_plugin_scripts(){
