@@ -13,10 +13,10 @@ Version: 0.1
 	add_action( 'admin_enqueue_scripts', 'cc_plugin_styles' );
 	
 	function menu_pages(){		
-		add_menu_page('RSVP Invitation', 'RSVP Invitation', 'manage_options', 'rsvp_invitation','', 'dashicons-clipboard');
-		add_submenu_page( 'rsvp_invitation', 'Create Event Page', 'Create Event','manage_options', 'rsvp_invitation', 'add_event_page');
-		add_submenu_page( 'rsvp_invitation', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
-		add_submenu_page( 'rsvp_invitation', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
+		add_menu_page('RSVP', 'RSVP', 'manage_options', 'rsvp','', 'dashicons-clipboard');
+		add_submenu_page( 'rsvp', 'Create Event Page', 'Create Event','manage_options', 'rsvp', 'add_event_page');
+		add_submenu_page( 'rsvp', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
+		add_submenu_page( 'rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
 		add_submenu_page( 'rsvp_invitation', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 	}
 	
@@ -65,7 +65,7 @@ Version: 0.1
 			event_date date NOT NULL,
 			event_venue varchar(150) NOT NULL,
 			event_address varchar(250) NOT NULL,
-			event_about varchar(150) NOT NULL,
+			event_about varchar(300) NOT NULL,
 			event_host varchar(50) NOT NULL,
 			event_time time NOT NULL,
 			PRIMARY KEY  (event_id)

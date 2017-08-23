@@ -32,7 +32,7 @@
 				<label for="event_address" class="form-control-label">
 					<b>Event Address </b>
 				</label>
-				<input type="text" class="form-control" placeholder="Event venue*" name="event_address" id="event_address" maxlength="250" required>
+				<input type="text" class="form-control" placeholder="Event address*" name="event_address" id="event_address" maxlength="250" required>
 			</div>
 			<div class="form-group col-lg-4 col-md-4 col-sm-12">
 				<label for="event_date" class="form-control-label">
@@ -50,7 +50,7 @@
              	<label for="about_event">
              		<b>About The Event</b>
              	</label>
-        		<textarea class="form-control" placeholder="Limit 150 words*" name="event_about" id="event_about" maxlength="150" rows="4" required></textarea>
+        		<textarea class="form-control" placeholder="Limit 300 words*" name="event_about" id="event_about" maxlength="300" rows="4" required></textarea>
             </div>
             <div class="form-group col-lg-4 col-md-4 col-sm-12">
 				<label for="event_host" class="form-control-label">
