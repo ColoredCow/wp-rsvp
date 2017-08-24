@@ -3,9 +3,9 @@
     "type": "Project",
     "description": "Easy-to-use event management plugin for sending invitation to your guests",
     "license":"GPL-3.0+",
-    "version": "1.0",
+    "version": "2.0",
     "config" : {
-        "vendor-dir" : "/path/to/vendors"
+        "vendor-dir" : "/plugins"
 
     },
 
