@@ -16,13 +16,13 @@
 				<label for="guest_email_id" class="form-control-label">
 					<b>Guest Email-ID</b>
 				</label>
-				<input type="email" class="form-control" placeholder="Guest email*" name="guest_email_id" id="guest_email_id" maxlength="50" required>	
+				<input type="email" class="form-control" placeholder="Guest email*" name="guest_email_id" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="e.g example@domain.com" id="guest_email_id" maxlength="50" required>	
 			</div>
 			<div class="form-group col-lg-12">
 				<label for="guest_mobile_number" class="form-control-label">
 					<b>Guest Mobile Number</b>
 				</label>
-				<input type="tel" pattern="[789][0-9]{9}" class="form-control"  placeholder="Guest mobile number*" name="guest_mobile_number" id="guest_mobile_number" maxlength="10" required>	
+				<input type="tel" pattern="[0-9][0-9]{9}" title="Mobile Number should  only contain 10 numerical digits. e.g 9876543210" class="form-control"  placeholder="Guest mobile number*" name="guest_mobile_number" id="guest_mobile_number" maxlength="10" required>	
 			</div>  
 			<div class="form-group col-lg-12">
 				<label for="guest_gender" class="form-control-label">
