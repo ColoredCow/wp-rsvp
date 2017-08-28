@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: RSVP
-Description: Easy-to-use event management plugin for sending invitation to your guests.
+Plugin Name:Soiree RSVP
+Description: WordPress plugin for managing events and guests.
 Author: ColoredCow
 Author URI: www.coloredcow.com
 Version: 0.1
