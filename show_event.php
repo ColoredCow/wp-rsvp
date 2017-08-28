@@ -2,11 +2,11 @@
 	<table class="header-table">
     	<thead>  
 			<tr>  
-			    <th class="th">Name</th>
-			    <th class="th">Theme</th>
-			    <th class="th">Venue</th>
-			    <th class="th">Date</th>
-			    <th class="th">Action</th>
+			    <th>Name</th>
+			    <th>Theme</th>
+			    <th>Venue</th>
+			    <th>Date</th>
+			    <th>Action</th>
 			</tr> 
 		</thead> 
 	</table>
