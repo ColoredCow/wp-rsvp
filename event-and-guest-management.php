@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name:Soiree RSVP
-Description: WordPress plugin for managing events and guests.
+Plugin Name: WP-RSVP
+Description: WordPress plugin for managing events, guests and rsvp.
 Author: ColoredCow
 Author URI: www.coloredcow.com
 Version: 0.1
@@ -13,17 +13,17 @@ Version: 0.1
 	add_action( 'admin_enqueue_scripts', 'cc_plugin_styles' );
 	
 	function menu_pages(){		
-		add_menu_page('Soiree RSVP', 'Soiree RSVP', 'manage_options', 'soiree rsvp','', 'dashicons-clipboard');
-		add_submenu_page( 'soiree rsvp', 'Create Event Page', 'Create Event','manage_options', 'soiree rsvp', 'add_event_page');
-		add_submenu_page( 'soiree rsvp', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
-		add_submenu_page( 'soiree rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
-		add_submenu_page( 'soiree rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
+		add_menu_page('WP-RSVP', 'WP-RSVP', 'manage_options', 'wp-rsvp','', 'dashicons-clipboard');
+		add_submenu_page( 'wp-rsvp', 'Create Event Page', 'Create Event','manage_options', 'wp-rsvp', 'add_event_page');
+		add_submenu_page( 'wp-rsvp', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
+		add_submenu_page( 'wp-rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
+		add_submenu_page( 'wp-rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 	}
 	
 	
 
 	function cc_plugin_scripts($hook){
-	 	if( $hook != 'toplevel_page_soiree rsvp' && $hook != 'soiree-rsvp_page_event_list_page' && $hook != 'soiree-rsvp_page_add_guest_page' && $hook != 'soiree-rsvp_page_guest_list_page') {
+	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page') {
 		
 			return;
         }
@@ -37,7 +37,7 @@ Version: 0.1
 	}
 	
 	function cc_plugin_styles($hook){
-	 	if( $hook != 'toplevel_page_soiree rsvp' && $hook != 'soiree-rsvp_page_event_list_page' && $hook != 'soiree-rsvp_page_add_guest_page' && $hook != 'soiree-rsvp_page_guest_list_page') {
+	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page') {
 			
 			return;
         
