@@ -18,12 +18,14 @@ Version: 0.1
 		add_submenu_page( 'wp-rsvp', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
 		add_submenu_page( 'wp-rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
 		add_submenu_page( 'wp-rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
+		add_submenu_page( 'wp-rsvp', 'Send Invitation Page', 'Send Invitation','manage_options', 'send_invitation_page', 'send_invitation_page');
+
 	}
 	
 	
 
 	function cc_plugin_scripts($hook){
-	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page') {
+	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page' && $hook != 'wp-rsvp_page_send_invitation_page') {
 		
 			return;
         }
@@ -37,7 +39,7 @@ Version: 0.1
 	}
 	
 	function cc_plugin_styles($hook){
-	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page') {
+	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page' && $hook != 'wp-rsvp_page_send_invitation_page') {
 			
 			return;
         
@@ -63,6 +65,9 @@ Version: 0.1
 	 	require_once("show_guest.php");
 	}
 
+	function send_invitation_page() {
+	 	require_once("send_invitation.php");
+	}
 
 	function create_plugin_database_table() {
 		global $wpdb;
@@ -267,4 +272,139 @@ Version: 0.1
 	add_action('wp_ajax_show_all_guests','show_all_guests');
 	add_action('wp_ajax_nopriv_show_all_guests','show_all_guests');
 		
+function show_all_guest_invitation(){
+        global $wpdb;
+		$table_name = $wpdb->prefix . 'events';
+
+        $thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name ORDER BY event_date ASC LIMIT 1 "));
+        $current_event = $thepost->event_name;
+        
+        $current_event_id = $thepost->event_id; 
+        $output2 .='';
+        $output2 .='Your Current Event is: '.$current_event.''; 
+        
+        $output2 .=' <table class="header-table">
+								<thead>  
+									<tr>  
+									   	<th>Name</th>
+									   	<th>Email</th>
+									   	<th>Mobile No.</th>
+									  	<th>Gender</th>
+							     		<th>Action</th>
+						           </tr> 
+						       </thead> 
+						   </table>';
+			echo $output2;
+			
+
+		global $wpdb;
+		$table_names = $wpdb->prefix . 'guests';
+		$result = $wpdb->get_results ( "SELECT * FROM $table_names" );
+
+		foreach ( $result as $page ){
+			$output='';
+			$guest_id = $page->guest_id;
+			$guest_name = $page->guest_name;
+			$guest_email = $page->guest_email;
+			$guest_gender = $page->guest_gender;
+			$guest_phone_number = $page->guest_phone_number;	
+			$output .='<table>
+								<thead>  
+									<tr class="tr">  
+										<th>'.$guest_name.'</th>
+										<th>'.$guest_email.'</th>
+										<th>'.$guest_phone_number.'</th>
+										<th>'.$guest_gender.'</th>
+										<th><button type="button" class="btn btn-outline-success btn-sm sends" value='.$current_event_id.' id='.$guest_id.'><span class="glyphicon glyphicon-star" aria-hidden="true"></span>Send Invitation</button></th>
+									</tr> 
+								</thead> 
+							</table>';
+
+				echo $output;
+		}
+
+
+		wp_die();
+	}
+
+	add_action('wp_ajax_show_all_guest_invitation','show_all_guest_invitation');
+	add_action('wp_ajax_nopriv_show_all_guest_invitation','show_all_guest_invitation');
+		
+
+
+	add_action('wp_ajax_send_message', 'send_message');
+	add_action('wp_ajax_nopriv_send_message', 'send_message');
+
+	function send_message(){
+    	if(isset($_POST['event_id'])&&isset($_POST['guest_id'])){
+       		$event_id=$_POST['event_id'];
+       		$guest_id=$_POST['guest_id'];
+        	
+        	global $wpdb;
+		  	$table_name_events = $wpdb->prefix . 'events';
+		  	$table_name_guests = $wpdb->prefix . 'guests';
+
+          $thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_guests where guest_id = $guest_id"));
+           	$guest_name = $thepost->guest_name;
+           	$guest_email = $thepost->guest_email;
+        
+
+          	$results = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_events where event_id = $event_id"));
+			$event_name = $results->event_name;
+			$event_theme = $results->event_theme;
+			$event_venue = $results->event_venue;
+			$event_about = $results->event_about;
+			$event_address = $results->event_address;
+			$event_time = $results->event_time;
+			$event_host = $results->event_host;
+			$date = $results->event_date;
+			$modify_date = date('d-M-Y', strtotime($date));
+			$subject='RSVP Invitation';
+			$emailTo = $guest_email;
+			$subject = $subject;
+			$body .= '
+			<h2>Hi '.$guest_name.',</h2>
+			</br></br>
+			'.$event_about.'</br></br></br>
+			<center>
+			    <i>Please join us for:</i></br></br>
+    			<h2>
+        			<p>'.$event_name.'</p>
+    			</h2>
+    			</br>
+			    <p><b>Theme:</b> '.$event_theme.'</p>
+			    </br>
+			    <p><b>Venue:</b> '.$event_venue.'</p>
+			    <p><b>Date:</b> '.$modify_date.'</p>
+			    <p><b>Time:</b>'.$event_time.'</p>
+			    <p><b>Host:</b>'.$event_host.'</p>
+			    <p><b>Address:</b> '.$event_address.'</p>
+			</center>
+					';
+				$headers = $name;
+				if(wp_mail($emailTo, $subject, $body,$headers)){
+					echo '
+					<div class="alert alert-success alert-dismissable">
+					    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+					    </a>
+					    Successfull! Invitation Mail has been sent to <strong> '.$guest_name.' </strong>.
+					</div>
+					';
+				}
+				else
+				{
+					echo "
+					<div class='alert alert-warning'>Mail function Error!</div>
+					";
+				}
+				wp_die();
+		}
+	}
+	
+	add_filter( 'wp_mail_content_type', 'set_content_type' );
+	function set_content_type( $content_type ) {
+		return 'text/html';
+	}
 ?>
+
+		
