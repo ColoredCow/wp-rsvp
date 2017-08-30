@@ -1,7 +1,8 @@
 <div class="heading">All Guests</div>
     <table class="header-table">
        <thead>  
-           <tr>  
+           <tr>  	
+           		<th>S.No</th>
 			   	<th>Name</th>
 			   	<th>Email</th>
 			   	<th>Mobile No.</th>
