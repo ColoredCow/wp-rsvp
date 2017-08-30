@@ -81,7 +81,7 @@ Version: 0.1
 			event_date date NOT NULL,
 			event_venue varchar(150) NOT NULL,
 			event_address varchar(250) NOT NULL,
-			event_about varchar(300) NOT NULL,
+			event_about varchar(1000) NOT NULL,
 			event_host varchar(50) NOT NULL,
 			event_time time NOT NULL,
 			PRIMARY KEY  (event_id)
@@ -91,7 +91,7 @@ Version: 0.1
 			guest_id mediumint(9)  NOT NULL AUTO_INCREMENT,
 			guest_name varchar(50) NOT NULL,
 			guest_email varchar(50) NOT NULL,
-			guest_phone_number bigint(10) NOT NULL,
+			guest_phone_number bigint(10) NULL,
 			guest_gender varchar(50) NOT NULL,
 			guest_category varchar(50) NOT NULL DEFAULT 'approved',
 			PRIMARY KEY  (guest_id)
@@ -177,6 +177,7 @@ Version: 0.1
 	function show_all_events(){global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_name ORDER BY event_date ASC" );
+		$serial = 1;
 
 		foreach ( $result as $page ){
 			$output='';
@@ -186,9 +187,11 @@ Version: 0.1
 			$event_venue = $page->event_venue;
 			$date = $page->event_date;
 			$modify_date = date('d-M-Y', strtotime($date));
+			$no = $serial++;
 			$output .='<table>
 							<thead>  
 								<tr class="tr">  
+									<th>'.$no.'</th>
 									<th>'.$event_name.'</th>
 									<th>'.$event_theme.'</th>
 									<th>'.$event_venue.'</th>
@@ -244,6 +247,7 @@ Version: 0.1
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'guests';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_name" );
+		$serial = 1;
 
 		foreach ( $result as $page ){
 			$output='';
@@ -252,9 +256,11 @@ Version: 0.1
 			$guest_email = $page->guest_email;
 			$guest_gender = $page->guest_gender;
 			$guest_phone_number = $page->guest_phone_number;
+			$no= $serial++;
 			$output .='<table>
 							<thead>  
-								<tr class="tr">  
+								<tr class="tr">
+									<th>'.$no.'</th>  
 									<th>'.$guest_name.'</th>
 									<th>'.$guest_email.'</th>
 									<th>'.$guest_phone_number.'</th>
@@ -275,6 +281,7 @@ Version: 0.1
 function show_all_guest_invitation(){
         global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
+		$serial = 1;
 
         $thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name ORDER BY event_date ASC LIMIT 1 "));
         $current_event = $thepost->event_name;
@@ -285,10 +292,10 @@ function show_all_guest_invitation(){
         
         $output2 .=' <table class="header-table">
 								<thead>  
-									<tr>  
+									<tr>
+										<th>S.No</th>  
 									   	<th>Name</th>
 									   	<th>Email</th>
-									   	<th>Mobile No.</th>
 									  	<th>Gender</th>
 							     		<th>Action</th>
 						           </tr> 
@@ -307,13 +314,13 @@ function show_all_guest_invitation(){
 			$guest_name = $page->guest_name;
 			$guest_email = $page->guest_email;
 			$guest_gender = $page->guest_gender;
-			$guest_phone_number = $page->guest_phone_number;	
+			$no= $serial++;	
 			$output .='<table>
 								<thead>  
-									<tr class="tr">  
+									<tr class="tr">
+										<th>'.$no.'</th>  
 										<th>'.$guest_name.'</th>
 										<th>'.$guest_email.'</th>
-										<th>'.$guest_phone_number.'</th>
 										<th>'.$guest_gender.'</th>
 										<th><button type="button" class="btn btn-outline-success btn-sm sends" value='.$current_event_id.' id='.$guest_id.'><span class="glyphicon glyphicon-star" aria-hidden="true"></span>Send Invitation</button></th>
 									</tr> 
@@ -355,7 +362,8 @@ function show_all_guest_invitation(){
 			$event_venue = $results->event_venue;
 			$event_about = $results->event_about;
 			$event_address = $results->event_address;
-			$event_time = $results->event_time;
+			$time = $results->event_time;
+			$modify_time = date('h:i a', strtotime($time));
 			$event_host = $results->event_host;
 			$date = $results->event_date;
 			$modify_date = date('d-M-Y', strtotime($date));
@@ -376,7 +384,7 @@ function show_all_guest_invitation(){
 			    </br>
 			    <p><b>Venue:</b> '.$event_venue.'</p>
 			    <p><b>Date:</b> '.$modify_date.'</p>
-			    <p><b>Time:</b>'.$event_time.'</p>
+			    <p><b>Time:</b>'.$modify_time.'</p>
 			    <p><b>Host:</b>'.$event_host.'</p>
 			    <p><b>Address:</b> '.$event_address.'</p>
 			</center>

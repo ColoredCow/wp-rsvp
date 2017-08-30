@@ -50,7 +50,7 @@
              	<label for="about_event">
              		<b>About The Event</b>
              	</label>
-        		<textarea class="form-control" placeholder="Limit 300 words*" name="event_about" id="event_about" maxlength="300" rows="4" required></textarea>
+        		<textarea class="form-control" placeholder="Limit 1000 words*" name="event_about" id="event_about" maxlength="1000" rows="4" required></textarea>
             </div>
             <div class="form-group col-lg-4 col-md-4 col-sm-12">
 				<label for="event_host" class="form-control-label">

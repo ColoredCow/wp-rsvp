@@ -22,7 +22,7 @@
 				<label for="guest_mobile_number" class="form-control-label">
 					<b>Guest Mobile Number</b>
 				</label>
-				<input type="tel" pattern="[0-9][0-9]{9}" title="Mobile Number should  only contain 10 numerical digits. e.g 9876543210" class="form-control"  placeholder="Guest mobile number*" name="guest_mobile_number" id="guest_mobile_number" maxlength="10" required>	
+				<input type="tel" pattern="[0-9][0-9]{9}" title="Mobile Number should  only contain 10 numerical digits. e.g 9876543210" class="form-control"  placeholder="Guest mobile number(Optional)" name="guest_mobile_number" id="guest_mobile_number" maxlength="10">	
 			</div>  
 			<div class="form-group col-lg-12">
 				<label for="guest_gender" class="form-control-label">

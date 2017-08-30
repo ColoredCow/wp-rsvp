@@ -1,7 +1,8 @@
 <div class="heading">All Events</div>
 	<table class="header-table">
     	<thead>  
-			<tr>  
+			<tr>
+				<th>S.No</th>  
 			    <th>Name</th>
 			    <th>Theme</th>
 			    <th>Venue</th>
