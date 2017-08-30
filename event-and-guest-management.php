@@ -19,6 +19,7 @@ Version: 0.1
 		add_submenu_page( 'wp-rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
 		add_submenu_page( 'wp-rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 		add_submenu_page( 'wp-rsvp', 'Send Invitation Page', 'Send Invitation','manage_options', 'send_invitation_page', 'send_invitation_page');
+
 	}
 	
 	
