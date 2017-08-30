@@ -15,13 +15,13 @@
 }
 
 
-.table {
+table {
   margin-top: 0px;
   margin-bottom: 0px;
     width: 98%;
 }
 
-.th, .td {
+th, td {
   font-size: 17px;
 font-family: 'Quicksand', sans-serif;
 

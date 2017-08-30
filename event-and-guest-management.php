@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name:Soiree RSVP
-Description: WordPress plugin for managing events and guests.
+Plugin Name: WP-RSVP
+Description: WordPress plugin for managing events, guests and rsvp.
 Author: ColoredCow
 Author URI: www.coloredcow.com
 Version: 0.1
@@ -13,15 +13,21 @@ Version: 0.1
 	add_action( 'admin_enqueue_scripts', 'cc_plugin_styles' );
 	
 	function menu_pages(){		
-		add_menu_page('RSVP', 'RSVP', 'manage_options', 'rsvp','', 'dashicons-clipboard');
-		add_submenu_page( 'rsvp', 'Create Event Page', 'Create Event','manage_options', 'rsvp', 'add_event_page');
-		add_submenu_page( 'rsvp', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
-		add_submenu_page( 'rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
-		add_submenu_page( 'rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
+		add_menu_page('WP-RSVP', 'WP-RSVP', 'manage_options', 'wp-rsvp','', 'dashicons-clipboard');
+		add_submenu_page( 'wp-rsvp', 'Create Event Page', 'Create Event','manage_options', 'wp-rsvp', 'add_event_page');
+		add_submenu_page( 'wp-rsvp', 'Event List Page', 'Event List','manage_options', 'event_list_page', 'event_list_page');
+		add_submenu_page( 'wp-rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
+		add_submenu_page( 'wp-rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 	}
 	
-	function cc_plugin_scripts(){
-        wp_enqueue_script('cc-bootstrap',plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap.min.js', array('jquery'), '1.0.0', true);
+	
+
+	function cc_plugin_scripts($hook){
+	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page') {
+		
+			return;
+        }
+	    wp_enqueue_script('cc-bootstrap',plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap.min.js', array('jquery'), '1.0.0', true);
         wp_enqueue_script('cc-js',plugin_dir_url( __FILE__ ).'/dist/lib/js/jquery-1.11.3.min.js', array('jquery'), '1.0.0', true);
         wp_enqueue_script( 'cc-bootstrap4-script', plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap4.min.js', array( 'jquery'), '1.0.0', true);
 		wp_enqueue_script( 'cc-bootstrap-tether', 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
@@ -30,10 +36,15 @@ Version: 0.1
 		wp_localize_script( 'main', 'PARAMS', array( 'ajaxurl' => admin_url('admin-ajax.php') ) );
 	}
 	
-	function cc_plugin_styles(){
-		wp_enqueue_style( 'cc-bootstrap4-style', plugin_dir_url( __FILE__ ).'/dist/lib/css/bootstrap4.min.css');
-		wp_enqueue_style( 'custom-style', plugin_dir_url( __FILE__ ).'/src/css/style.css');
-		wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans|Baloo+Bhaijaan|Quicksand');
+	function cc_plugin_styles($hook){
+	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page') {
+			
+			return;
+        
+        }
+			wp_enqueue_style( 'cc-bootstrap4-style', plugin_dir_url( __FILE__ ).'/dist/lib/css/bootstrap4.min.css');
+			wp_enqueue_style( 'ccustom-style', plugin_dir_url( __FILE__ ).'/src/css/style.css');
+			wp_enqueue_style( 'cc-fonts','https://fonts.googleapis.com/css?family=Oswald|Marcellus+SC|Roboto|Open+Sans|Baloo+Bhaijaan|Quicksand');
 	}
 
 	function add_event_page() {
@@ -170,14 +181,14 @@ Version: 0.1
 			$event_venue = $page->event_venue;
 			$date = $page->event_date;
 			$modify_date = date('d-M-Y', strtotime($date));
-			$output .='<table class="table">
+			$output .='<table>
 							<thead>  
 								<tr class="tr">  
-									<th class="th">'.$event_name.'</th>
-									<th class="th">'.$event_theme.'</th>
-									<th class="th">'.$event_venue.'</th>
-									<th class="th">'.$modify_date.'</th>
-									<th class="th"><button type="button" class="btn btn-outline-danger btn-sm send" id='.$event_id.'>Delete</button></th>
+									<th>'.$event_name.'</th>
+									<th>'.$event_theme.'</th>
+									<th>'.$event_venue.'</th>
+									<th>'.$modify_date.'</th>
+									<th><button type="button" class="btn btn-outline-danger btn-sm send" id='.$event_id.'>Delete</button></th>
 								</tr> 
 							</thead> 
 						</table>';
@@ -236,14 +247,14 @@ Version: 0.1
 			$guest_email = $page->guest_email;
 			$guest_gender = $page->guest_gender;
 			$guest_phone_number = $page->guest_phone_number;
-			$output .='<table class="table">
+			$output .='<table>
 							<thead>  
 								<tr class="tr">  
-									<th class="th">'.$guest_name.'</th>
-									<th class="th">'.$guest_email.'</th>
-									<th class="th">'.$guest_phone_number.'</th>
-									<th class="th">'.$guest_gender.'</th>
-									<th class="th"><button type="button" class="btn btn-outline-danger btn-sm delete" id='.$guest_id.'>Delete</button></th>
+									<th>'.$guest_name.'</th>
+									<th>'.$guest_email.'</th>
+									<th>'.$guest_phone_number.'</th>
+									<th>'.$guest_gender.'</th>
+									<th><button type="button" class="btn btn-outline-danger btn-sm delete" id='.$guest_id.'>Delete</button></th>
 								</tr> 
 							</thead> 
 						</table>';
