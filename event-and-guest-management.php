@@ -346,66 +346,87 @@ function show_all_guest_invitation(){
     	if(isset($_POST['event_id'])&&isset($_POST['guest_id'])){
        		$event_id=$_POST['event_id'];
        		$guest_id=$_POST['guest_id'];
-        	
-        	global $wpdb;
-		  	$table_name_events = $wpdb->prefix . 'events';
-		  	$table_name_guests = $wpdb->prefix . 'guests';
+        		
+        		global $wpdb;
+				$table_name_event_guest = $wpdb->prefix . 'event_guest';
+				$check_guest_id = $wpdb->get_results("SELECT * FROM $table_name_event_guest WHERE guest_id = $guest_id AND event_id = $event_id ");
+					if($wpdb->num_rows > 0) {
+					   echo'<div class="alert alert-danger alert-dismissable">
+					    		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+					    			</a>
+					            <strong>Sorry!</strong> Invitation Mail has been Already sent to this guest.
+							</div>';
+				    } 
+				    else 
+				    { 
+						global $wpdb;
+						$table_name_events = $wpdb->prefix . 'events';
+						$table_name_guests = $wpdb->prefix . 'guests';
 
-          $thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_guests where guest_id = $guest_id"));
-           	$guest_name = $thepost->guest_name;
-           	$guest_email = $thepost->guest_email;
-        
+							$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_guests where guest_id = $guest_id"));
+				           	$guest_name = $thepost->guest_name;
+				           	$guest_email = $thepost->guest_email;
+				        
 
-          	$results = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_events where event_id = $event_id"));
-			$event_name = $results->event_name;
-			$event_theme = $results->event_theme;
-			$event_venue = $results->event_venue;
-			$event_about = $results->event_about;
-			$event_address = $results->event_address;
-			$time = $results->event_time;
-			$modify_time = date('h:i a', strtotime($time));
-			$event_host = $results->event_host;
-			$date = $results->event_date;
-			$modify_date = date('d-M-Y', strtotime($date));
-			$subject='RSVP Invitation';
-			$emailTo = $guest_email;
-			$subject = $subject;
-			$body .= '
-			<h2>Hi '.$guest_name.',</h2>
-			</br></br>
-			'.$event_about.'</br></br></br>
-			<center>
-			    <i>Please join us for:</i></br></br>
-    			<h2>
-        			<p>'.$event_name.'</p>
-    			</h2>
-    			</br>
-			    <p><b>Theme:</b> '.$event_theme.'</p>
-			    </br>
-			    <p><b>Venue:</b> '.$event_venue.'</p>
-			    <p><b>Date:</b> '.$modify_date.'</p>
-			    <p><b>Time:</b>'.$modify_time.'</p>
-			    <p><b>Host:</b>'.$event_host.'</p>
-			    <p><b>Address:</b> '.$event_address.'</p>
-			</center>
-					';
-				$headers = $name;
-				if(wp_mail($emailTo, $subject, $body,$headers)){
-					echo '
-					<div class="alert alert-success alert-dismissable">
-					    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
-					    </a>
-					    Successfull! Invitation Mail has been sent to <strong> '.$guest_name.' </strong>.
-					</div>
-					';
-				}
-				else
-				{
-					echo "
-					<div class='alert alert-warning'>Mail function Error!</div>
-					";
-				}
-				wp_die();
+				          	$results = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_events where event_id = $event_id"));
+							$event_name = $results->event_name;
+							$event_theme = $results->event_theme;
+							$event_venue = $results->event_venue;
+							$event_about = $results->event_about;
+							$event_address = $results->event_address;
+							$time = $results->event_time;
+							$modify_time = date('h:i a', strtotime($time));
+							$event_host = $results->event_host;
+							$date = $results->event_date;
+							$modify_date = date('d-M-Y', strtotime($date));
+							$subject='RSVP Invitation';
+							$emailTo = $guest_email;
+							$subject = $subject;
+							$body .= '
+							<h2>Hi '.$guest_name.',</h2>
+							</br></br>
+							'.$event_about.'</br></br></br>
+							<center>
+							    <i>Please join us for:</i></br></br>
+				    			<h2>
+				        			<p>'.$event_name.'</p>
+				    			</h2>
+				    			</br>
+							    <p><b>Theme:</b> '.$event_theme.'</p>
+							    </br>
+							    <p><b>Venue:</b> '.$event_venue.'</p>
+							    <p><b>Date:</b> '.$modify_date.'</p>
+							    <p><b>Time:</b> '.$modify_time.'</p>
+							    <p><b>Host:</b> '.$event_host.'</p>
+							    <p><b>Address:</b> '.$event_address.'</p>
+							</center>
+									';
+								$headers = $name;
+									if(wp_mail($emailTo, $subject, $body,$headers)){
+										echo '
+										<div class="alert alert-success alert-dismissable">
+										    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+										    </a>
+										    <strong>Successfull!</strong> Invitation Mail has been sent to  <strong> '.$guest_name.' </strong>.
+										</div>
+										';									
+											$table_name = $wpdb->prefix . 'event_guest';
+									        $wpdb->insert( $table_name, array(
+												'event_id' => $event_id,
+												'guest_id' => $guest_id,
+												'email_status' => 'Send',
+												'guest_status' => 'pending',	 
+											));
+									}
+			        				else
+									{
+										echo "
+										<div class='alert alert-warning'>Mail function Error!</div>
+										";
+									}
+					}
+				
+			wp_die();		
 		}
 	}
 	
