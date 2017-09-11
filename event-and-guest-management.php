@@ -279,58 +279,53 @@ Version: 0.1
 	add_action('wp_ajax_nopriv_show_all_guests','show_all_guests');
 		
 	function show_all_guest_invitation(){
-        global $wpdb;
-			$table_name = $wpdb->prefix . 'events';
-
-	        $thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name ORDER BY event_date ASC LIMIT 1 "));
-		        $current_event = $thepost->event_name; 
-		        $current_event_id = $thepost->event_id;
-
-		        $output2 .='';
-		        $output2 .='Your Current Event is: '.$current_event.''; 
-		        $output2 .=' <table class="header-table">
-								<thead>  
-									<tr>  
-									   	<th>Name</th>
-									   	<th>Email</th>
-									  	<th>Gender</th>
-							     		<th>Action</th>
-						            </tr> 
-						        </thead> 
-						   	</table>';
-				echo $output2;
-			
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'events';
+		$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name ORDER BY event_date ASC LIMIT 1 "));
+		$current_event = $thepost->event_name; 
+		$current_event_id = $thepost->event_id;
+		$output2 .='';
+		$output2 .='Your Current Event is: '.$current_event.''; 
+		$output2 .=' <table class="header-table">
+						<thead>  
+							<tr>  
+								<th>Name</th>
+								<th>Email</th>
+								<th>Gender</th>
+								<th>Action</th>
+							</tr> 
+						</thead> 
+					</table>';
+		echo $output2;
 
 		global $wpdb;
-			$table_names = $wpdb->prefix . 'guests';
-			$table = $wpdb->prefix . 'event_guest';
-			$result = $wpdb->get_results ( "SELECT $table_names.guest_id, guest_name, guest_email, guest_gender, guest_phone_number, email_status 
-											FROM $table_names
-										    LEFT JOIN $table 
-										    ON $table_names.guest_id = $table.guest_id"
-										    );
-			foreach ( $result as $page ){
-				$output='';
-				$guest_id = $page->guest_id;
-				$guest_name = $page->guest_name;
-				$guest_email = $page->guest_email;
-				$guest_gender = $page->guest_gender;
-				$guest_phone_number = $page->guest_phone_number;
-				$check_email_status = $page->email_status;	
-				$output .='<table>
-								<thead>  
-									<tr class="tr">  
-										<th>'.$guest_name.'</th>
-										<th>'.$guest_email.'</th>
-										<th>'.$guest_gender.'</th>
-										<th><button type="button" class="btn btn-outline-primary btn-sm sends '.$check_email_status.'" value='.$current_event_id.' id='.$guest_id.'>Send Invitation</button></th>
-									</tr> 
-								</thead> 
-							</table>';
-
-				echo $output;
-			}
-
+		$table_names = $wpdb->prefix . 'guests';
+		$table = $wpdb->prefix . 'event_guest';
+		$result = $wpdb->get_results ( "SELECT $table_names.guest_id, guest_name, guest_email, guest_gender, guest_phone_number, email_status 
+										FROM $table_names
+										LEFT JOIN $table 
+										ON $table_names.guest_id = $table.guest_id"
+									);
+		foreach ( $result as $page ){
+			$output='';
+			$guest_id = $page->guest_id;
+			$guest_name = $page->guest_name;
+			$guest_email = $page->guest_email;
+			$guest_gender = $page->guest_gender;
+			$guest_phone_number = $page->guest_phone_number;
+			$check_email_status = $page->email_status;	
+			$output .='<table>
+							<thead>  
+								<tr class="tr">  
+									<th>'.$guest_name.'</th>
+									<th>'.$guest_email.'</th>
+									<th>'.$guest_gender.'</th>
+									<th><button type="button" class="btn btn-outline-primary btn-sm sends '.$check_email_status.'" value='.$current_event_id.' id='.$guest_id.'>Send Invitation</button></th>
+								</tr> 
+							</thead> 
+						</table>';
+			echo $output;
+		}
 
 		wp_die();
 	}
