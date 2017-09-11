@@ -73,6 +73,7 @@ Version: 0.1
 		global $wpdb;
 		$events_table_name = $wpdb->prefix . 'events';
 		$guests_table_name = $wpdb->prefix . 'guests';
+		$event_guest_table_name = $wpdb->prefix . 'event_guest';
 
 		$query_create_events_table = "CREATE TABLE $events_table_name (
 			event_id mediumint(5)  NOT NULL AUTO_INCREMENT,
@@ -97,10 +98,19 @@ Version: 0.1
 			PRIMARY KEY  (guest_id)
 		);";
 
+		$query_create_event_guest_table = "CREATE TABLE $event_guest_table_name (
+			index_id mediumint(9)  NOT NULL AUTO_INCREMENT,
+			event_id mediumint(5) NOT NULL,
+			guest_id mediumint(9) NOT NULL,
+			email_status varchar(32) NOT NULL DEFAULT 'Send',
+			guest_status varchar(32) NOT NULL DEFAULT 'Pending',
+			PRIMARY KEY  (index_id)
+		);";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $query_create_events_table );
 		dbDelta( $query_create_guests_table );
+		dbDelta( $query_create_event_guest_table );
 	}
 	 
 	register_activation_hook( __FILE__, 'create_plugin_database_table' );
