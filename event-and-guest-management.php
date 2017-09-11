@@ -119,26 +119,17 @@ Version: 0.1
 
 	function add_event() {
 		if(isset($_POST['event_name'])){
-			$event_name=$_POST['event_name'];
-			$event_theme=$_POST['event_theme'];
-			$event_date=$_POST['event_date'];
-			$event_address=$_POST['event_address'];
-			$event_time=$_POST['event_time'];
-			$event_about=$_POST['event_about'];
-			$event_venue=$_POST['event_venue'];
-			$event_host=$_POST['event_host'];
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'events';
 			$wpdb->insert( $table_name, array(
-				'event_name' => $event_name,
-				'event_theme' => $event_theme,
-				'event_date' => $event_date,
-				'event_venue' => $event_venue,
-				'event_address' => $event_address,
-				'event_time' => $event_time,
-				'event_venue' => $event_venue,
-				'event_host' => $event_host,
-				'event_about' => $event_about,
+				'event_name'  => $event_name= stripslashes($_POST['event_name']),
+				'event_theme' => $event_theme=stripslashes($_POST['event_theme']),
+				'event_date'  => $event_date=$_POST['event_date'],
+				'event_address' => $event_address=stripslashes($_POST['event_address']),
+				'event_time'  => $event_time=$_POST['event_time'],
+				'event_venue' => $event_venue=stripslashes($_POST['event_venue']),
+				'event_host'  => $event_host=stripslashes($_POST['event_host']),
+				'event_about' => $event_about=stripslashes($_POST['event_about']),
 			) );		       
 	   	      echo '<div class="alert alert-success alert-dismissable">
 	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
@@ -157,17 +148,13 @@ Version: 0.1
 	
 	function add_guest(){
 		if(isset($_POST['guest_name'])){
-		$guest_name=$_POST['guest_name'];
-		$guest_email=$_POST['guest_email_id'];
-		$guest_phone_number=$_POST['guest_mobile_number'];
-		$guest_gender=$_POST['guest_gender'];
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'guests';
 			$wpdb->insert( $table_name, array(
-				'guest_name' => $guest_name,
-				'guest_email' => $guest_email,
-				'guest_phone_number' => $guest_phone_number,
-				'guest_gender' => $guest_gender,	 
+				'guest_name' => $guest_name=stripslashes($_POST['guest_name']),
+				'guest_email' => $guest_email=$_POST['guest_email_id'],
+				'guest_phone_number' => $guest_phone_number=$_POST['guest_mobile_number'],
+				'guest_gender' => $guest_gender=$_POST['guest_gender'],	 
 			));
 			 echo '<div class="alert alert-success alert-dismissable">
 	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
