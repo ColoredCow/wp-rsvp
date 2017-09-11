@@ -153,6 +153,7 @@ function send(guest_id,event_id){
         url:PARAMS.ajaxurl,
         data:send_id,
         success:function(result){
+          fetch_all_guest_invitation();
           $('#loading').hide();
           $("#successfull_send_message").html(result);
         }
