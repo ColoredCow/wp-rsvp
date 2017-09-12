@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
    fetch_all_guests();
    fetch_all_events();
-   fetch_all_guest_invitation();
+   fetch_select_events();
    $('#loading').hide();
     
     $("#add_event").on("click",function() {
@@ -82,7 +82,6 @@ jQuery(document).ready(function($) {
       }
     });
 
-
     function delete_event(event_id){
       var event_id = event_id;
       var fetch_request ="action=delete_event_details&event_id="+event_id;
@@ -104,7 +103,6 @@ jQuery(document).ready(function($) {
       }
     });
 
-
     function delete_guest(guest_id){
       var guest_id = guest_id;
       var delete_request ="action=delete_guest_details&guest_id="+guest_id;
@@ -116,48 +114,96 @@ jQuery(document).ready(function($) {
             fetch_all_guests();
           }
       });
-    }
+    }   
 
-    function fetch_all_guest_invitation(){
-       var fetch_guest_invitation ="action=show_all_guest_invitation";
+    function fetch_select_events(){
+       var fetch_select_events ="action=fetch_select_events";
         $.ajax({
            type:'POST',
            url:PARAMS.ajaxurl,
-           data:fetch_guest_invitation,
+           data:fetch_select_events,
            success:function(result){
-              $("#show_all_guest_invitation").html(result);
+              $("#show_fetch_select_events").html(result);
           }
       });
     }
 
-
-
-
-$(document).on("click",'.sends',function(){    
-    var guest_id=$(this).attr('id');
-    var event_id=$(this).attr('value');
-    $('#loading').show();
-   send(guest_id,event_id); 
-});
-
-
-function send(guest_id,event_id){
-    var guest_id= guest_id;
-    var event_id= event_id;
-    
-    var send_id ="action=send_message&guest_id="+guest_id+"&event_id="+event_id;
-    
-
-    $.ajax({
-        type:'POST',
-        url:PARAMS.ajaxurl,
-        data:send_id,
-        success:function(result){
-          $('#loading').hide();
-          $("#successfull_send_message").html(result);
-        }
+    $('#show_fetch_select_events').on("#status").change(function() {
+        var event_id = $('#status').val();
+       fetch_all_guest_invitation(event_id);
+       show_email_template(event_id);
     });
-}
+
+    function show_email_template(event_id){
+      var event_id = event_id;
+      var show_email_template ="action=show_email_template&event_id="+event_id;
+        $.ajax({
+          type:'POST',
+          url:PARAMS.ajaxurl,
+          data:show_email_template,
+            success:function(result){
+              $("#show_email_template").html(result);
+            }
+        });
+    }
 
 
+    $(document).on("click",'.test-email',function(){ 
+      $('#loading').show();
+      var test_email_form ="action=send_test_mail&"+$('#email_form').serialize();
+      $.ajax({
+        type: 'POST',
+        url:PARAMS.ajaxurl,
+        data:test_email_form,
+        success:function(result){
+          $("#email_test_result").html(result);
+          $('#loading').hide();
+        }
+      });
+    });
+
+    $(document).on("click",'.hide-email',function(){   
+      $('#email-temp').hide();
+    });
+
+    $(document).on("click",'.email',function(){   
+     $('#email-temp').show();
+    });
+
+
+    function fetch_all_guest_invitation(event_id){
+      var event_id = event_id;
+      var fetch_guest_invitation ="action=show_all_guest_invitation&event_id="+event_id;
+        $.ajax({
+          type:'POST',
+          url:PARAMS.ajaxurl,
+          data:fetch_guest_invitation,
+            success:function(result){
+              $("#show_all_guest_invitation").html(result);
+            }
+        });
+    }
+
+    $(document).on("click",'.sends',function(){    
+        var guest_id=$(this).attr('id');
+        var event_id=$(this).attr('value');
+        $('#loading').show();
+       send(guest_id,event_id); 
+    });
+
+    function send(guest_id,event_id){
+        var guest_id= guest_id;
+        var event_id= event_id;        
+        var send_id ="action=send_message&guest_id="+guest_id+"&event_id="+event_id+"&"+$('#email_form').serialize();
+        $.ajax({
+            type:'POST',
+            url:PARAMS.ajaxurl,
+            data:send_id,
+            success:function(result){
+              fetch_all_guest_invitation(event_id);
+              $('#loading').hide();
+              $("#successfull_send_message").html(result);
+            }
+        });
+    }
 });
