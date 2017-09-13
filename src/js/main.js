@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
    fetch_all_guests();
    fetch_all_events();
-   fetch_select_events();
+   fetch_events_for_select();
    $('#loading').hide();
     
     $("#add_event").on("click",function() {
@@ -105,7 +105,9 @@ jQuery(document).ready(function($) {
 
     function delete_guest(guest_id){
       var guest_id = guest_id;
-      var delete_request ="action=delete_guest_details&guest_id="+guest_id;
+      // var delete_request ="action=delete_guest_details&guest_id="+guest_id;
+      var delete_request ="action=delete_event_details&event_id="+guest_id;
+
       $.ajax({
         type:'POST',
         url:PARAMS.ajaxurl,
@@ -116,8 +118,8 @@ jQuery(document).ready(function($) {
       });
     }   
 
-    function fetch_select_events(){
-       var fetch_select_events ="action=fetch_select_events";
+    function fetch_events_for_select(){
+       var fetch_select_events ="action=fetch_events_for_select";
         $.ajax({
            type:'POST',
            url:PARAMS.ajaxurl,
@@ -184,14 +186,14 @@ jQuery(document).ready(function($) {
         });
     }
 
-    $(document).on("click",'.sends',function(){    
+    $(document).on("click",'.send-email',function(){    
         var guest_id=$(this).attr('id');
         var event_id=$(this).attr('value');
         $('#loading').show();
-       send(guest_id,event_id); 
+       send_email(guest_id,event_id); 
     });
 
-    function send(guest_id,event_id){
+    function send_email(guest_id,event_id){
         var guest_id= guest_id;
         var event_id= event_id;        
         var send_id ="action=send_message&guest_id="+guest_id+"&event_id="+event_id+"&"+$('#email_form').serialize();
