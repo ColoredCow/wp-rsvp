@@ -19,14 +19,12 @@ Version: 0.1
 		add_submenu_page( 'wp-rsvp', 'Create Guest Page', 'Add a Guest','manage_options', 'add_guest_page', 'add_guest_page');
 		add_submenu_page( 'wp-rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 		add_submenu_page( 'wp-rsvp', 'Send Invitation Page', 'Send Invitation','manage_options', 'send_invitation_page', 'send_invitation_page');
-
 	}
 	
 	
 
 	function cc_plugin_scripts($hook){
 	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page' && $hook != 'wp-rsvp_page_send_invitation_page') {
-		
 			return;
         }
 	    wp_enqueue_script('cc-bootstrap',plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap.min.js', array('jquery'), '1.0.0', true);
@@ -40,9 +38,7 @@ Version: 0.1
 	
 	function cc_plugin_styles($hook){
 	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page' && $hook != 'wp-rsvp_page_send_invitation_page') {
-			
-			return;
-        
+			return;   
         }
 			wp_enqueue_style( 'cc-bootstrap4-style', plugin_dir_url( __FILE__ ).'/dist/lib/css/bootstrap4.min.css');
 			wp_enqueue_style( 'ccustom-style', plugin_dir_url( __FILE__ ).'/src/css/style.css');
@@ -111,10 +107,8 @@ Version: 0.1
 		dbDelta( $query_create_events_table );
 		dbDelta( $query_create_guests_table );
 		dbDelta( $query_create_event_guest_table );
-	}
-	 
+	}	 
 	register_activation_hook( __FILE__, 'create_plugin_database_table' );
-
 
 
 	function add_event() {
@@ -137,13 +131,10 @@ Version: 0.1
                      <strong>'.$event_name.' </strong>  has been added to your event list.
                     </div>';    	
 	   	}
-
 	   	wp_die();
 	}
-
 	add_action('wp_ajax_add_event','add_event');
 	add_action('wp_ajax_nopriv_add_event','add_event');
-
 
 	
 	function add_guest(){
@@ -162,50 +153,150 @@ Version: 0.1
                      <strong>'.$guest_name.' </strong>  has been added to your guest list.
                     </div>';
 	    }
-
 	   	wp_die();
 	}
-
 	add_action('wp_ajax_add_guest','add_guest');
 	add_action('wp_ajax_nopriv_add_guest','add_guest');
 
 
-
-	function show_all_events(){global $wpdb;
+	function show_all_events(){
+		global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_name ORDER BY event_date ASC" );
-		$serial = 1;
+		$number = 1;
 
 		foreach ( $result as $page ){
-			$output='';
 			$event_id = $page->event_id;
 			$event_name = $page->event_name;
 			$event_theme = $page->event_theme;
 			$event_venue = $page->event_venue;
 			$date = $page->event_date;
 			$modify_date = date('d-M-Y', strtotime($date));
-			$no = $serial++;
-			$output .='<table>
-							<thead>  
-								<tr class="tr">  
-									<th>'.$no.'</th>
-									<th>'.$event_name.'</th>
-									<th>'.$event_theme.'</th>
-									<th>'.$event_venue.'</th>
-									<th>'.$modify_date.'</th>
-									<th><button type="button" class="btn btn-outline-danger btn-sm send" id='.$event_id.'>Delete</button></th>
-								</tr> 
-							</thead> 
-						</table>';
-			echo $output;
-		}
+			$serial_number = $number++;
+			
+			include ('template/show-event-table.php');
 
+		}
 		wp_die();
 	}
-
 	add_action('wp_ajax_show_all_events','show_all_events');
 	add_action('wp_ajax_nopriv_show_all_events','show_all_events');
 
+
+	function edit_event_form(){
+		if(isset($_POST['event_id'])){
+         	$event_id=$_POST['event_id'];
+
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'events';
+		
+			$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name where event_id=$event_id"));
+			$event_name = $thepost->event_name;
+			$event_id = $thepost->event_id;
+			$event_theme = $thepost->event_theme;
+			$event_venue = $thepost->event_venue;
+			$event_about = $thepost->event_about;
+			$event_address = $thepost->event_address;
+			$time = $thepost->event_time;
+			$event_host = $thepost->event_host;
+			$date = $thepost->event_date;
+							
+			include ('template/edit-event-form.php');
+		}
+		wp_die();
+	}
+	add_action('wp_ajax_edit_event_form','edit_event_form');
+	add_action('wp_ajax_nopriv_edit_event_form','edit_event_form');
+
+	function edit_guest_form(){
+		if(isset($_POST['guest_id'])){
+         	$guest_id=$_POST['guest_id'];
+
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'guests';
+		
+			$results = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name where guest_id=$guest_id"));
+			$guest_id = $results->guest_id;
+			$guest_name = $results->guest_name;
+			$guest_email = $results->guest_email;
+			$guest_gender = $results->guest_gender;
+			$guest_phone_number = $results->guest_phone_number;
+
+			include ('template/edit-guest-form.php');
+		}
+		wp_die();
+	}
+	add_action('wp_ajax_edit_guest_form','edit_guest_form');
+	add_action('wp_ajax_nopriv_edit_guest_form','edit_guest_form');
+
+
+	function update_event(){
+       if(isset($_POST['event_id'])){
+         $event_id=$_POST['event_id'];
+
+           global $wpdb;
+           $table_name = $wpdb->prefix . 'events';
+					$wpdb->update( 
+						$table_name, 
+						array( 
+							'event_name'  => $event_name= stripslashes($_POST['event_name']),
+							'event_theme' => $event_theme=stripslashes($_POST['event_theme']),
+							'event_date'  => $event_date=$_POST['event_date'],
+							'event_address' => $event_address=stripslashes($_POST['event_address']),
+							'event_time'  => $event_time=$_POST['event_time'],
+							'event_venue' => $event_venue=stripslashes($_POST['event_venue']),
+							'event_host'  => $event_host=stripslashes($_POST['event_host']),
+							'event_about' => $event_about=stripslashes($_POST['event_about']),
+							), 
+						array( 'event_id' => $event_id=$_POST['event_id'], ), 
+						array( 
+							'%s'
+						), 
+						array( '%d' ) 
+					);
+
+           echo '<div class="alert alert-success alert-dismissable">
+	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+	   	                </a>
+                     <strong>'.$event_name.' </strong>  has been updated.
+                    </div>';
+        }
+       wp_die();
+    }   
+	add_action('wp_ajax_update_event','update_event');
+	add_action('wp_ajax_nopriv_update_event','update_event');
+
+	function update_guest(){
+       if(isset($_POST['guest_id'])){
+         $event_id=$_POST['guest_id'];
+
+           global $wpdb;
+           $table_name = $wpdb->prefix . 'guests';
+					$wpdb->update( 
+						$table_name, 
+						array( 
+							'guest_name' => $guest_name=stripslashes($_POST['guest_name']),
+							'guest_email' => $guest_email=$_POST['guest_email_id'],
+							'guest_phone_number' => $guest_phone_number=$_POST['guest_mobile_number'],
+							'guest_gender' => $guest_gender=$_POST['guest_gender'],
+							), 
+						array( 'guest_id' => $guest_id=$_POST['guest_id'], ), 
+						array( 
+							'%s'
+						), 
+						array( '%d' ) 
+					);
+
+           echo '<div class="alert alert-success alert-dismissable">
+	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+	   	                </a>
+                     <strong>'.$guest_name.' </strong>  has been updated.
+                    </div>';
+        }
+       wp_die();
+    }   
+	add_action('wp_ajax_update_guest','update_guest');
+	add_action('wp_ajax_nopriv_update_guest','update_guest');
 
 
 	function delete_event_details(){
@@ -215,13 +306,10 @@ Version: 0.1
            $table_name = $wpdb->prefix . 'events';
            $wpdb->query( $wpdb->prepare("DELETE FROM $table_name WHERE event_id = $event_id"));
         }
-
        wp_die();
     }   
-
 	add_action('wp_ajax_delete_event_details','delete_event_details');
 	add_action('wp_ajax_nopriv_delete_event_details','delete_event_details');
-
 
 
 	function delete_guest_details(){
@@ -231,51 +319,36 @@ Version: 0.1
            $table_name = $wpdb->prefix . 'guests';
            $wpdb->query( $wpdb->prepare("DELETE FROM $table_name WHERE guest_id = $guest_id"));
         }
-
        wp_die();
     }   
-
 	add_action('wp_ajax_delete_guest_details','delete_guest_details');
 	add_action('wp_ajax_nopriv_delete_guest_details','delete_guest_details');
-
 
 
 	function show_all_guests(){
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'guests';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_name" );
-		$serial = 1;
+		$number = 1;
 
 		foreach ( $result as $page ){
-			$output='';
 			$guest_id = $page->guest_id;
 			$guest_name = $page->guest_name;
 			$guest_email = $page->guest_email;
 			$guest_gender = $page->guest_gender;
 			$guest_phone_number = $page->guest_phone_number;
-			$no= $serial++;
-			$output .='<table>
-							<thead>  
-								<tr class="tr">
-									<th>'.$no.'</th>  
-									<th>'.$guest_name.'</th>
-									<th>'.$guest_email.'</th>
-									<th>'.$guest_phone_number.'</th>
-									<th>'.$guest_gender.'</th>
-									<th><button type="button" class="btn btn-outline-danger btn-sm delete" id='.$guest_id.'>Delete</button></th>
-								</tr> 
-							</thead> 
-						</table>';
-			echo $output;
-		}
+			$serial_number= $number++;
 
+			include ('template/show-guest-table.php');
+			
+		}
 		wp_die();
 	}
-
 	add_action('wp_ajax_show_all_guests','show_all_guests');
 	add_action('wp_ajax_nopriv_show_all_guests','show_all_guests');
+
 		
-function show_all_guest_invitation(){
+	function show_all_guest_invitation(){
         global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
 		$serial = 1;
@@ -300,8 +373,6 @@ function show_all_guest_invitation(){
 						   </table>';
 			echo $output2;
 			
-
-		global $wpdb;
 		$table_names = $wpdb->prefix . 'guests';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_names" );
 
@@ -326,18 +397,11 @@ function show_all_guest_invitation(){
 
 				echo $output;
 		}
-
-
 		wp_die();
 	}
-
 	add_action('wp_ajax_show_all_guest_invitation','show_all_guest_invitation');
 	add_action('wp_ajax_nopriv_show_all_guest_invitation','show_all_guest_invitation');
 		
-
-
-	add_action('wp_ajax_send_message', 'send_message');
-	add_action('wp_ajax_nopriv_send_message', 'send_message');
 
 	function send_message(){
     	if(isset($_POST['event_id'])&&isset($_POST['guest_id'])){
@@ -362,8 +426,7 @@ function show_all_guest_invitation(){
 
 							$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_guests where guest_id = $guest_id"));
 				           	$guest_name = $thepost->guest_name;
-				           	$guest_email = $thepost->guest_email;
-				        
+				           	$guest_email = $thepost->guest_email;   
 
 				          	$results = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_events where event_id = $event_id"));
 							$event_name = $results->event_name;
@@ -421,16 +484,19 @@ function show_all_guest_invitation(){
 										<div class='alert alert-warning'>Mail function Error!</div>
 										";
 									}
-					}
-				
+					}			
 			wp_die();		
 		}
-	}
-	
+	}	
+	add_action('wp_ajax_send_message', 'send_message');
+	add_action('wp_ajax_nopriv_send_message', 'send_message');
+
 	add_filter( 'wp_mail_content_type', 'set_content_type' );
 	function set_content_type( $content_type ) {
 		return 'text/html';
 	}
+
+
 ?>
 
 		

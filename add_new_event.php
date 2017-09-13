@@ -9,12 +9,10 @@
 	<form id="add_event_form">
 		<div class="row">
 			<div class="form-group col-lg-4 col-md-4 col-sm-12">
-				<div class="">
-					<label for="event_name" class="form-control-label">
-						<b>Event Title</b>
-					</label>
-					<input type="text" class="form-control" placeholder="Event title*" name="event_name" id="event_name" maxlength="50" required>
-				</div>
+				<label for="event_name" class="form-control-label">
+					<b>Event Title</b>
+				</label>
+				<input type="text" class="form-control" placeholder="Event title*" name="event_name" id="event_name" maxlength="50" required>
 			</div>
 			<div class="form-group col-lg-4 col-md-4 col-sm-12">				
 				<label for="event_theme" class="form-control-label">
