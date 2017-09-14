@@ -20,16 +20,14 @@ Version: 0.1
 		add_submenu_page( 'wp-rsvp', 'Guest List Page', 'Guest List','manage_options', 'guest_list_page', 'guest_list_page');
 		add_submenu_page( 'wp-rsvp', 'Send Invitation Page', 'Send Invitation','manage_options', 'send_invitation_page', 'send_invitation_page');
 	}
-	
-	
-
+		
 	function cc_plugin_scripts($hook){
 	 	if( $hook != 'toplevel_page_wp-rsvp' && $hook != 'wp-rsvp_page_event_list_page' && $hook != 'wp-rsvp_page_add_guest_page' && $hook != 'wp-rsvp_page_guest_list_page' && $hook != 'wp-rsvp_page_send_invitation_page') {
 			return;
-        }
-	    wp_enqueue_script('cc-bootstrap',plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap.min.js', array('jquery'), '1.0.0', true);
-        wp_enqueue_script('cc-js',plugin_dir_url( __FILE__ ).'/dist/lib/js/jquery-1.11.3.min.js', array('jquery'), '1.0.0', true);
-        wp_enqueue_script( 'cc-bootstrap4-script', plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap4.min.js', array( 'jquery'), '1.0.0', true);
+		}
+		wp_enqueue_script('cc-bootstrap',plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap.min.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script('cc-js',plugin_dir_url( __FILE__ ).'/dist/lib/js/jquery-1.11.3.min.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script( 'cc-bootstrap4-script', plugin_dir_url( __FILE__ ).'/dist/lib/js/bootstrap4.min.js', array( 'jquery'), '1.0.0', true);
 		wp_enqueue_script( 'cc-bootstrap-tether', 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js');
 		wp_enqueue_script( 'cc-fontawesome-icons', 'https://use.fontawesome.com/ffc2c94a85.js');
 		wp_enqueue_script( 'main', plugin_dir_url( __FILE__ ).'/src/js/main.js', array( 'jquery'), '1.0.0', true);
@@ -46,23 +44,23 @@ Version: 0.1
 	}
 
 	function add_event_page() {
-	 	require_once("add_new_event.php");
+		require_once("add_new_event.php");
 	}
 
 	function add_guest_page() {
-	 	require_once("add_new_guest.php");
+		require_once("add_new_guest.php");
 	}
 
 	function event_list_page() {
-	 	require_once("show_event.php");
+		require_once("show_event.php");
 	}
 
 	function guest_list_page() {
-	 	require_once("show_guest.php");
+		require_once("show_guest.php");
 	}
 
 	function send_invitation_page() {
-	 	require_once("send_invitation.php");
+		require_once("send_invitation.php");
 	}
 
 	function create_plugin_database_table() {
@@ -98,8 +96,8 @@ Version: 0.1
 			index_id mediumint(9)  NOT NULL AUTO_INCREMENT,
 			event_id mediumint(5) NOT NULL,
 			guest_id mediumint(9) NOT NULL,
-			email_status varchar(32) NOT NULL DEFAULT 'Send',
-			guest_status varchar(32) NOT NULL DEFAULT 'Pending',
+			email_status varchar(32) NOT NULL,
+			guest_status varchar(32) NOT NULL,
 			PRIMARY KEY  (index_id)
 		);";
 
@@ -107,8 +105,8 @@ Version: 0.1
 		dbDelta( $query_create_events_table );
 		dbDelta( $query_create_guests_table );
 		dbDelta( $query_create_event_guest_table );
-	}	 
-	register_activation_hook( __FILE__, 'create_plugin_database_table' );
+	}
+ 	register_activation_hook( __FILE__, 'create_plugin_database_table' );
 
 
 	function add_event() {
@@ -123,15 +121,15 @@ Version: 0.1
 				'event_time'  => $event_time=$_POST['event_time'],
 				'event_venue' => $event_venue=stripslashes($_POST['event_venue']),
 				'event_host'  => $event_host=stripslashes($_POST['event_host']),
-				'event_about' => $event_about=stripslashes($_POST['event_about']),
+				'event_about' => $event_about=nl2br(stripslashes($_POST['event_about'])),
 			) );		       
-	   	      echo '<div class="alert alert-success alert-dismissable">
-	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
-	   	                </a>
-                     <strong>'.$event_name.' </strong>  has been added to your event list.
-                    </div>';    	
-	   	}
-	   	wp_die();
+			  echo '<div class="alert alert-success alert-dismissable">
+					 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+						</a>
+					 <strong>'.$event_name.' </strong>  has been added to your event list.
+					</div>';    	
+		}
+		wp_die();
 	}
 	add_action('wp_ajax_add_event','add_event');
 	add_action('wp_ajax_nopriv_add_event','add_event');
@@ -148,12 +146,12 @@ Version: 0.1
 				'guest_gender' => $guest_gender=$_POST['guest_gender'],	 
 			));
 			 echo '<div class="alert alert-success alert-dismissable">
-	   	             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
-	   	                </a>
-                     <strong>'.$guest_name.' </strong>  has been added to your guest list.
-                    </div>';
-	    }
-	   	wp_die();
+					 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+						</a>
+					 <strong>'.$guest_name.' </strong>  has been added to your guest list.
+					</div>';
+		}
+		wp_die();
 	}
 	add_action('wp_ajax_add_guest','add_guest');
 	add_action('wp_ajax_nopriv_add_guest','add_guest');
@@ -183,7 +181,7 @@ Version: 0.1
 	add_action('wp_ajax_nopriv_show_all_events','show_all_events');
 
 
-	function edit_event_form(){
+function edit_event_form(){
 		if(isset($_POST['event_id'])){
          	$event_id=$_POST['event_id'];
 
@@ -313,14 +311,14 @@ Version: 0.1
 
 
 	function delete_guest_details(){
-       if(isset($_POST['guest_id'])){
-         $guest_id=$_POST['guest_id'];
-           global $wpdb;
-           $table_name = $wpdb->prefix . 'guests';
-           $wpdb->query( $wpdb->prepare("DELETE FROM $table_name WHERE guest_id = $guest_id"));
-        }
-       wp_die();
-    }   
+	   if(isset($_POST['guest_id'])){
+		 $guest_id=$_POST['guest_id'];
+		   global $wpdb;
+		   $table_name = $wpdb->prefix . 'guests';
+		   $wpdb->query( $wpdb->prepare("DELETE FROM $table_name WHERE guest_id = $guest_id"));
+		}
+	   wp_die();
+	}   
 	add_action('wp_ajax_delete_guest_details','delete_guest_details');
 	add_action('wp_ajax_nopriv_delete_guest_details','delete_guest_details');
 
@@ -347,156 +345,176 @@ Version: 0.1
 	add_action('wp_ajax_show_all_guests','show_all_guests');
 	add_action('wp_ajax_nopriv_show_all_guests','show_all_guests');
 
-		
-	function show_all_guest_invitation(){
-        global $wpdb;
+
+	function fetch_events_for_select(){
+		global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
-		$serial = 1;
+		$result = $wpdb->get_results ( "SELECT * FROM $table_name ORDER BY event_date ASC" );
+		
+		include ('template/select-event.php');
 
-        $thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name ORDER BY event_date ASC LIMIT 1 "));
-        $current_event = $thepost->event_name;
-        
-        $current_event_id = $thepost->event_id; 
-        $output2 .='';
-        $output2 .='Your Current Event is: '.$current_event.''; 
-        
-        $output2 .=' <table class="header-table">
-								<thead>  
-									<tr>
-										<th>S.No</th>  
-									   	<th>Name</th>
-									   	<th>Email</th>
-									  	<th>Gender</th>
-							     		<th>Action</th>
-						           </tr> 
-						       </thead> 
-						   </table>';
-			echo $output2;
+		wp_die();		
+	}
+	add_action('wp_ajax_fetch_events_for_select','fetch_events_for_select');
+	add_action('wp_ajax_nopriv_fetch_events_for_select','fetch_events_for_select');
+
+
+	function show_email_template(){
+		if(isset($_POST['event_id'])){
+			$event_id=$_POST['event_id'];
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'events';
+
+			$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name WHERE event_id = $event_id "));
+			$event_id = $thepost->event_id;
+			$event_name = $thepost->event_name;
+			$event_theme = $thepost->event_theme;
+			$event_venue = $thepost->event_venue;
+			$event_about = $thepost->event_about;
+			$event_address = $thepost->event_address;
+			$time = $thepost->event_time;
+			$modify_time = date('h:i a', strtotime($time));
+			$event_host = $thepost->event_host;
+			$date = $thepost->event_date;
+			$modify_date = date('d-M-Y', strtotime($date));
+
+			include ('template/email-template.php');
 			
-		$table_names = $wpdb->prefix . 'guests';
-		$result = $wpdb->get_results ( "SELECT * FROM $table_names" );
-
-		foreach ( $result as $page ){
-			$output='';
-			$guest_id = $page->guest_id;
-			$guest_name = $page->guest_name;
-			$guest_email = $page->guest_email;
-			$guest_gender = $page->guest_gender;
-			$no= $serial++;	
-			$output .='<table>
-								<thead>  
-									<tr class="tr">
-										<th>'.$no.'</th>  
-										<th>'.$guest_name.'</th>
-										<th>'.$guest_email.'</th>
-										<th>'.$guest_gender.'</th>
-										<th><button type="button" class="btn btn-outline-success btn-sm sends" value='.$current_event_id.' id='.$guest_id.'><span class="glyphicon glyphicon-star" aria-hidden="true"></span>Send Invitation</button></th>
-									</tr> 
-								</thead> 
-							</table>';
-
-				echo $output;
 		}
 		wp_die();
 	}
+	add_action('wp_ajax_show_email_template','show_email_template');
+	add_action('wp_ajax_nopriv_show_email_template','show_email_template');
+
+
+	function send_test_mail(){
+		if(isset($_POST['test_email_id'])){
+			$fontfamily=$_POST['fontstyle'];
+			$fontsize=$_POST['fontsize'];
+			$test_mailto=$_POST['test_email_id'];	
+			$subject=stripslashes($_POST['subject']);
+			$ebody=nl2br(stripslashes($_POST['body']));
+						
+					$emailTo = $test_mailto;
+					$subject = $subject;
+						$body = 'Hi Guest Name,
+								<br><br>
+								<font style="font-family:'.$fontfamily.';font-size:'.$fontsize.'px; color:black;">'.$ebody.'</font>';
+					$headers = array('Content-Type: text/html; charset=UTF-8');
+					if(wp_mail($emailTo, $subject, $body,$headers, $attachments)){
+						echo'
+						<div class="alert alert-info alert-dismissable">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+							</a>
+							<strong>Successfull!</strong> Test Email has been sent to  <strong> '.$test_mailto.'</strong>.
+						</div>
+						';									
+					}
+					else
+					{
+						echo'
+						<div class="alert alert-warning">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+							</a>
+							Mail function Error!
+						</div>						
+						';
+					}
+			}				
+			wp_die();		
+	}
+	add_action('wp_ajax_send_test_mail', 'send_test_mail');
+	add_action('wp_ajax_nopriv_send_test_mail', 'send_test_mail');
+		
+		
+	function show_all_guest_invitation(){
+		if(isset($_POST['event_id'])){
+			$event_id=$_POST['event_id'];
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'events';
+			$number = 1;
+
+			$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name where event_id=$event_id"));	
+			$current_event_id = $thepost->event_id; 
+			
+			$table_names = $wpdb->prefix . 'guests';
+			$table = $wpdb->prefix . 'event_guest';
+				$result = $wpdb->get_results ( "SELECT $table_names.guest_id, guest_name, guest_email, guest_gender, guest_phone_number, email_status FROM $table_names LEFT JOIN $table ON $table_names.guest_id = $table.guest_id And $event_id=$table.event_id" );
+
+			include ('template/send-invitation-table.php');			
+		}		
+		wp_die();
+	}		
 	add_action('wp_ajax_show_all_guest_invitation','show_all_guest_invitation');
 	add_action('wp_ajax_nopriv_show_all_guest_invitation','show_all_guest_invitation');
 		
 
-	function send_message(){
-    	if(isset($_POST['event_id'])&&isset($_POST['guest_id'])){
-       		$event_id=$_POST['event_id'];
-       		$guest_id=$_POST['guest_id'];
-        		
-        		global $wpdb;
+function send_message(){
+		if(isset($_POST['event_id'])&&isset($_POST['guest_id'])){
+			$event_id=$_POST['event_id'];
+			$guest_id=$_POST['guest_id'];
+			$subject=stripslashes($_POST['subject']);
+			$ebody=nl2br(stripslashes($_POST['body']));
+					
+				global $wpdb;
 				$table_name_event_guest = $wpdb->prefix . 'event_guest';
 				$check_guest_id = $wpdb->get_results("SELECT * FROM $table_name_event_guest WHERE guest_id = $guest_id AND event_id = $event_id ");
 					if($wpdb->num_rows > 0) {
-					   echo'<div class="alert alert-danger alert-dismissable">
-					    		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
-					    			</a>
-					            <strong>Sorry!</strong> Invitation Mail has been Already sent to this guest.
+						echo'<div class="alert alert-danger alert-dismissable">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+									</a>
+								<strong>Sorry!</strong> Invitation Mail has been Already sent to this guest.
 							</div>';
-				    } 
-				    else 
-				    { 
-						global $wpdb;
+					} 
+					else 
+					{ 
 						$table_name_events = $wpdb->prefix . 'events';
 						$table_name_guests = $wpdb->prefix . 'guests';
 
 							$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_guests where guest_id = $guest_id"));
-				           	$guest_name = $thepost->guest_name;
-				           	$guest_email = $thepost->guest_email;   
+							$guest_name = $thepost->guest_name;
+							$guest_email = $thepost->guest_email;						
 
-				          	$results = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_events where event_id = $event_id"));
-							$event_name = $results->event_name;
-							$event_theme = $results->event_theme;
-							$event_venue = $results->event_venue;
-							$event_about = $results->event_about;
-							$event_address = $results->event_address;
-							$time = $results->event_time;
-							$modify_time = date('h:i a', strtotime($time));
-							$event_host = $results->event_host;
-							$date = $results->event_date;
-							$modify_date = date('d-M-Y', strtotime($date));
-							$subject='RSVP Invitation';
+							$results = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_events where event_id = $event_id"));
 							$emailTo = $guest_email;
 							$subject = $subject;
-							$body .= '
-							<h2>Hi '.$guest_name.',</h2>
-							</br></br>
-							'.$event_about.'</br></br></br>
-							<center>
-							    <i>Please join us for:</i></br></br>
-				    			<h2>
-				        			<p>'.$event_name.'</p>
-				    			</h2>
-				    			</br>
-							    <p><b>Theme:</b> '.$event_theme.'</p>
-							    </br>
-							    <p><b>Venue:</b> '.$event_venue.'</p>
-							    <p><b>Date:</b> '.$modify_date.'</p>
-							    <p><b>Time:</b> '.$modify_time.'</p>
-							    <p><b>Host:</b> '.$event_host.'</p>
-							    <p><b>Address:</b> '.$event_address.'</p>
-							</center>
-									';
-								$headers = $name;
-									if(wp_mail($emailTo, $subject, $body,$headers)){
-										echo '
-										<div class="alert alert-success alert-dismissable">
-										    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
-										    </a>
-										    <strong>Successfull!</strong> Invitation Mail has been sent to  <strong> '.$guest_name.' </strong>.
-										</div>
-										';									
-											$table_name = $wpdb->prefix . 'event_guest';
-									        $wpdb->insert( $table_name, array(
-												'event_id' => $event_id,
-												'guest_id' => $guest_id,
-												'email_status' => 'Send',
-												'guest_status' => 'pending',	 
-											));
-									}
-			        				else
-									{
-										echo "
-										<div class='alert alert-warning'>Mail function Error!</div>
-										";
-									}
-					}			
+								$body = 'Hi '.$guest_name.',
+										<br><br>
+										<font style="font-family:Tahoma;">'.$ebody.'</font>';
+							$headers = array('Content-Type: text/html; charset=UTF-8');
+							if(wp_mail($emailTo, $subject, $body,$headers)){
+								echo '
+								<div class="alert alert-success alert-dismissable">
+									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+									</a>
+									<strong>Successfull!</strong> Invitation Mail has been sent to  <strong> '.$guest_name.' </strong>.
+								</div>
+								';									
+									$table_name = $wpdb->prefix . 'event_guest';
+									$wpdb->insert( $table_name, array(
+										'event_id' => $event_id,
+										'guest_id' => $guest_id,
+										'email_status' => 'send',
+										'guest_status' => 'pending',	 
+									));
+							}
+							else
+							{
+								echo "
+								<div class='alert alert-warning'>Mail function Error!</div>
+								";
+							}
+					}				
 			wp_die();		
 		}
-	}	
+	}
 	add_action('wp_ajax_send_message', 'send_message');
 	add_action('wp_ajax_nopriv_send_message', 'send_message');
+
+		
 
 	add_filter( 'wp_mail_content_type', 'set_content_type' );
 	function set_content_type( $content_type ) {
 		return 'text/html';
 	}
-
-
 ?>
-
-		
