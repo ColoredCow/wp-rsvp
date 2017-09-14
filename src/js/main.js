@@ -105,9 +105,7 @@ jQuery(document).ready(function($) {
 
     function delete_guest(guest_id){
       var guest_id = guest_id;
-      // var delete_request ="action=delete_guest_details&guest_id="+guest_id;
-      var delete_request ="action=delete_event_details&event_id="+guest_id;
-
+      var delete_request ="action=delete_guest_details&guest_id="+guest_id;  
       $.ajax({
         type:'POST',
         url:PARAMS.ajaxurl,
@@ -149,6 +147,45 @@ jQuery(document).ready(function($) {
         });
     }
 
+    $(document).on("click",'.edit',function(){    
+        var event_id=$(this).attr('id');
+        var edit_event_form ="action=edit_event_form&event_id="+event_id;
+        $.ajax({
+            type:'POST',
+            url:PARAMS.ajaxurl,
+            data:edit_event_form,
+            success:function(result){
+              $("#edit_event_form").show();
+              $("#edit_event_form").html(result);
+            }
+        });
+    });
+
+    $(document).on("click",'.hide',function(){   
+      $("#edit_event_form").hide();
+      $("#edit_guest_form").hide();
+    });
+
+    $(document).on("click",'.update_event',function(){
+        var requestForm=$('#event_form');       
+        if(!requestForm[0].checkValidity()){
+            requestForm[0].reportValidity();
+            return;
+          }  else {  
+          var event_id=$(this).attr('id');
+          var edit_event_form ="action=update_event&event_id="+event_id+"&"+$('#event_form').serialize();
+          $.ajax({
+            type: 'POST',
+            url:PARAMS.ajaxurl,
+            data:edit_event_form,
+            success:function(result){
+              $("#sucessfull_event_submission").html(result);
+              $("#edit_event_form").hide();
+              fetch_all_events();
+            }            
+          });
+        }
+    });    
 
     $(document).on("click",'.test-email',function(){ 
       $('#loading').show();
@@ -185,6 +222,41 @@ jQuery(document).ready(function($) {
             }
         });
     }
+
+    $(document).on("click",'.edit-guest',function(){    
+        var guest_id=$(this).attr('id');
+        var edit_guest_form ="action=edit_guest_form&guest_id="+guest_id;
+        $.ajax({
+            type:'POST',
+            url:PARAMS.ajaxurl,
+            data:edit_guest_form,
+            success:function(result){
+              $("#edit_guest_form").show();
+              $("#edit_guest_form").html(result);
+            }
+        });
+    });
+
+    $(document).on("click",'.update_guest',function(){
+        var requestForm=$('#guest_form');       
+        if(!requestForm[0].checkValidity()){
+            requestForm[0].reportValidity();
+            return;
+          }  else {  
+          var guest_id=$(this).attr('id');
+          var edit_event_form ="action=update_guest&guest_id="+guest_id+"&"+$('#guest_form').serialize();
+          $.ajax({
+            type: 'POST',
+            url:PARAMS.ajaxurl,
+            data:edit_event_form,
+            success:function(result){
+              $("#sucessfull_guest_submission").html(result);
+              $("#edit_guest_form").hide();
+              fetch_all_guests();
+            }            
+          });
+        }
+    });
 
     $(document).on("click",'.send-email',function(){    
         var guest_id=$(this).attr('id');
