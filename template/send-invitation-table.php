@@ -14,14 +14,13 @@
 		$guest_id = $page->guest_id;
 		$guest_name = $page->guest_name;
 		$guest_email = $page->guest_email;
-		$guest_gender = $page->guest_gender;
-		$serial_number= $number++;	
+		$guest_gender = $page->guest_gender;	
 		$email = $page->email_status;	
 ?>				
 		<table>
 			<thead>  
 				<tr class="hover-background"> 
-					<th><?php echo $serial_number ?></th> 
+					<th><?php echo $serial_number++ ?></th> 
 					<th><?php echo $guest_name ?></th>
 					<th><?php echo $guest_email ?></th>
 					<th><?php echo $guest_gender ?></th>

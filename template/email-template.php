@@ -1,16 +1,19 @@
 <?php
 $emailbody ='
- '.$event_about.'
-Please join us for:
+'.$event_about.'
+
+<i>Please join us for:</i>
 
 '.$event_name.'
 
 Theme: '.$event_theme.'
 Venue: '.$event_venue.'
 Date: '.$modify_date.'
-Time:'.$modify_time.'
-Host:'.$event_host.'
+Time: '.$modify_time.'
+Host: '.$event_host.'
 Address: '.$event_address.'
+
+See You in the event.
 ';        
 ?>			
 <button type="button" class="btn btn-success btn-sm email">Email Template</button>
