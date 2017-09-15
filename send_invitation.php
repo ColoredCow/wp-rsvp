@@ -1,4 +1,5 @@
-<div class="overlay" id="loading"></div>
+<div class="overlay" id="loading_process"></div>
+<div class="heading">Send Invitation</div>
 <div class="container-fluid">
 	<div id="show_fetch_select_events"></div>
 	<hr>

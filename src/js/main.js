@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
    fetch_all_guests();
    fetch_all_events();
    fetch_events_for_select();
-   $('#loading').hide();
+   $('#loading_process').hide();
     
     $("#add_event").on("click",function() {
       var requestForm=$('#add_event_form');                      
@@ -74,7 +74,7 @@ jQuery(document).ready(function($) {
       });
     }
 
-    $(document).on("click",'.send',function(){
+    $(document).on("click",'.delete-event',function(){
       var check1=confirm("Are You Sure you want to delete this event?");
       if (check1==true) {
         var event_id=$(this).attr('id');
@@ -95,7 +95,7 @@ jQuery(document).ready(function($) {
       });
     }
 
-    $(document).on("click",'.delete',function(){
+    $(document).on("click",'.delete-guest',function(){
       var check2=confirm("Are You Sure you want to delete this guest?");
       if (check2==true) {
         var guest_id=$(this).attr('id');
@@ -147,7 +147,7 @@ jQuery(document).ready(function($) {
         });
     }
 
-    $(document).on("click",'.edit',function(){    
+    $(document).on("click",'.edit-event',function(){    
         var event_id=$(this).attr('id');
         var edit_event_form ="action=edit_event_form&event_id="+event_id;
         $.ajax({
@@ -166,7 +166,7 @@ jQuery(document).ready(function($) {
       $("#edit_guest_form").hide();
     });
 
-    $(document).on("click",'.update_event',function(){
+    $(document).on("click",'.update-event',function(){
         var requestForm=$('#event_form');       
         if(!requestForm[0].checkValidity()){
             requestForm[0].reportValidity();
@@ -188,7 +188,7 @@ jQuery(document).ready(function($) {
     });    
 
     $(document).on("click",'.test-email',function(){ 
-      $('#loading').show();
+      $('#loading_process').show();
       var test_email_form ="action=send_test_mail&"+$('#email_form').serialize();
       $.ajax({
         type: 'POST',
@@ -196,7 +196,7 @@ jQuery(document).ready(function($) {
         data:test_email_form,
         success:function(result){
           $("#email_test_result").html(result);
-          $('#loading').hide();
+          $('#loading_process').hide();
         }
       });
     });
@@ -237,7 +237,7 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $(document).on("click",'.update_guest',function(){
+    $(document).on("click",'.update-guest',function(){
         var requestForm=$('#guest_form');       
         if(!requestForm[0].checkValidity()){
             requestForm[0].reportValidity();
@@ -261,7 +261,7 @@ jQuery(document).ready(function($) {
     $(document).on("click",'.send-email',function(){    
         var guest_id=$(this).attr('id');
         var event_id=$(this).attr('value');
-        $('#loading').show();
+        $('#loading_process').show();
        send_email(guest_id,event_id); 
     });
 
@@ -275,7 +275,7 @@ jQuery(document).ready(function($) {
             data:send_id,
             success:function(result){
               fetch_all_guest_invitation(event_id);
-              $('#loading').hide();
+              $('#loading_process').hide();
               $("#successfull_send_message").html(result);
             }
         });

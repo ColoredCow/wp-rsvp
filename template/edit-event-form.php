@@ -53,7 +53,7 @@
 			</div>
 		</div>			
 		<div class="form-group col-lg-3 col-md-4 col-sm-12">
-   			<button type="button" class="btn btn-primary btn-block update_event" id="<?php echo $event_id ?>"> Update Event Details</button>
+   			<button type="button" class="btn btn-primary btn-block update-event" id="<?php echo $event_id ?>"> Update Event Details</button>
 		</div>
 	</form>			
 </div>

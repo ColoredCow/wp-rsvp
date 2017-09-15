@@ -121,7 +121,7 @@ Version: 0.1
 				'event_time'  => $event_time=$_POST['event_time'],
 				'event_venue' => $event_venue=stripslashes($_POST['event_venue']),
 				'event_host'  => $event_host=stripslashes($_POST['event_host']),
-				'event_about' => $event_about=nl2br(stripslashes($_POST['event_about'])),
+				'event_about' => $event_about=stripslashes($_POST['event_about']),
 			) );		       
 			  echo '<div class="alert alert-success alert-dismissable">
 					 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
@@ -161,7 +161,7 @@ Version: 0.1
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'events';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_name ORDER BY event_date ASC" );
-		$number = 1;
+		$serial_number = 1;
 
 		foreach ( $result as $page ){
 			$event_id = $page->event_id;
@@ -170,8 +170,7 @@ Version: 0.1
 			$event_venue = $page->event_venue;
 			$date = $page->event_date;
 			$modify_date = date('d-M-Y', strtotime($date));
-			$serial_number = $number++;
-			
+						
 			include ('template/show-event-table.php');
 
 		}
@@ -247,9 +246,7 @@ function edit_event_form(){
 							'event_about' => $event_about=stripslashes($_POST['event_about']),
 							), 
 						array( 'event_id' => $event_id=$_POST['event_id'], ), 
-						array( 
-							'%s'
-						), 
+						array( '%s' ), 
 						array( '%d' ) 
 					);
 
@@ -279,9 +276,7 @@ function edit_event_form(){
 							'guest_gender' => $guest_gender=$_POST['guest_gender'],
 							), 
 						array( 'guest_id' => $guest_id=$_POST['guest_id'], ), 
-						array( 
-							'%s'
-						), 
+						array( '%s' ), 
 						array( '%d' ) 
 					);
 
@@ -327,7 +322,7 @@ function edit_event_form(){
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'guests';
 		$result = $wpdb->get_results ( "SELECT * FROM $table_name" );
-		$number = 1;
+		$serial_number = 1;
 
 		foreach ( $result as $page ){
 			$guest_id = $page->guest_id;
@@ -335,8 +330,7 @@ function edit_event_form(){
 			$guest_email = $page->guest_email;
 			$guest_gender = $page->guest_gender;
 			$guest_phone_number = $page->guest_phone_number;
-			$serial_number= $number++;
-
+			
 			include ('template/show-guest-table.php');
 			
 		}
@@ -397,9 +391,10 @@ function edit_event_form(){
 						
 					$emailTo = $test_mailto;
 					$subject = $subject;
-						$body = 'Hi Guest Name,
+						$body = '<font style="font-family:'.$fontfamily.';font-size:'.$fontsize.'px; color:black;">
+								Hi Guest Name,
 								<br><br>
-								<font style="font-family:'.$fontfamily.';font-size:'.$fontsize.'px; color:black;">'.$ebody.'</font>';
+								'.$ebody.'</font>';
 					$headers = array('Content-Type: text/html; charset=UTF-8');
 					if(wp_mail($emailTo, $subject, $body,$headers, $attachments)){
 						echo'
@@ -432,7 +427,7 @@ function edit_event_form(){
 			$event_id=$_POST['event_id'];
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'events';
-			$number = 1;
+			$serial_number = 1;
 
 			$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name where event_id=$event_id"));	
 			$current_event_id = $thepost->event_id; 
