@@ -1,13 +1,13 @@
-# RSVP Plugin
+This project was built as part of [*Build a Web App*](https://coloredcow.com/codetrek-session/build-web-app/), training programme by [CodeTrek](https://coloredcow.com/codetrek/). 
+ 
 
-* Organizing events don't have to be a headache anymore. We in [coloredcow](https://www.coloredcow.com) have designed a RSVP Plugin for wordpress that work seamlessly.
 
-* It manages and track RSVP's online for any event and function. You can easily manage your guest and events with our RSVP WordPress Plugin.
-* It provides a better way than using guest list spreadsheets to track your attendees. 
-* With RSVP Invitation you can track your guests on-the-go on your smartphone or tablet device, and you can use it to manage  guests, attendees or participants for any kind of event.
-* Send personalized email invites with one click.
+# About the RSVP Plugin
+
+Organizing events can be quite a headache and we tried to solve this problem at CodeTrek. You can send out personalised invitations to guests for events and records their responses.
+
 ## Version
-1. 1.0 
+1.1.0 
 
 # Features(Version:1.0)
 1. Create Events
@@ -37,7 +37,8 @@ composer create-project coloredcow/rsvp
 ## License
 The RSVP is open-sourced WordPress plugin licensed under the [GPL3+ license](https://opensource.org/licenses/gpl-license).
 
-## Development Blogs
+## Blogs by trainees
+
 1.[Open Source: Exploring New Possibilities](https://www.linkedin.com/pulse/open-sourse-exploring-new-possiblities-vivek-amola)
 
 2.[Open Source: First Step is Documentation](https://www.linkedin.com/pulse/open-source-first-step-documentation-vivek-amola)
