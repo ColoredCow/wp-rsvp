@@ -1,7 +1,7 @@
 <table class="header-table">
 	<thead>  
 		<tr>
-			<th>S.No</th>  
+			<th><input type="checkbox" id="check_all_guest">S.No</th>  
 			<th>Name</th>
 			<th>Email</th>
 			<th>Gender</th>
@@ -20,7 +20,8 @@
 		<table>
 			<thead>  
 				<tr class="hover-background"> 
-					<th><?php echo $serial_number++ ?></th> 
+					<th><input type="checkbox" value="<?php echo $guest_id ?>" class="guest-checkbox checkBoxClass chk">
+					<?php echo $serial_number++ ?></th> 
 					<th><?php echo $guest_name ?></th>
 					<th><?php echo $guest_email ?></th>
 					<th><?php echo $guest_gender ?></th>

@@ -506,7 +506,71 @@ function send_message(){
 	add_action('wp_ajax_send_message', 'send_message');
 	add_action('wp_ajax_nopriv_send_message', 'send_message');
 
-		
+
+	function send_email_to_all(){
+		if(isset($_POST['event_id'])&&isset($_POST['guest_array'])){
+			$guest_array=stripslashes($_POST['guest_array']);
+			$event_id=$_POST['event_id'];
+			$subject=stripslashes($_POST['subject']);
+			$ebody=nl2br(stripslashes($_POST['body']));
+			$myArray = explode(',', $guest_array);
+				foreach($myArray as $guest_id){
+					global $wpdb;
+					$table_name_event_guest = $wpdb->prefix . 'event_guest';
+					$check_guest_id = $wpdb->get_results("SELECT * FROM $table_name_event_guest WHERE guest_id = $guest_id AND event_id = $event_id ");
+					if($wpdb->num_rows > 0) {
+					echo'<div class="alert alert-danger alert-dismissable">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+					</a>
+					<strong>Sorry!</strong> Invitation Mail has been Already sent to this guest.
+					</div>';
+					} 
+					else 
+					{
+						$table_name_events = $wpdb->prefix . 'events';
+						$table_name_guests = $wpdb->prefix . 'guests';
+						$table_name_event_guest = $wpdb->prefix . 'event_guest';
+
+						$thepost = $wpdb->get_row( $wpdb->prepare("SELECT * FROM $table_name_guests where guest_id = $guest_id"));
+						$guest_name = $thepost->guest_name;
+						$guest_email = $thepost->guest_email;						
+
+							$emailTo = $guest_email;
+							$subject = $subject;
+							$body = 'Hi '.$guest_name.',
+							<br><br>
+							<font style="font-family:Tahoma;">'.$ebody.'</font>';
+							$headers = array('Content-Type: text/html; charset=UTF-8');
+							if(wp_mail($emailTo, $subject, $body, $headers)){
+								echo '
+								<div class="alert alert-success alert-dismissable">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
+								</a>
+								<strong>Successfull!</strong> Invitation Mail has been sent to  <strong> '.$guest_name.' </strong>.
+								</div>
+								';									
+								$table_name = $wpdb->prefix . 'event_guest';
+								$wpdb->insert( $table_name, array(
+								'event_id' => $event_id,
+								'guest_id' => $guest_id,
+								'email_status' => 'send',
+								'guest_status' => 'pending',	 
+								));
+							}
+							else
+							{
+								echo "
+								<div class='alert alert-warning'>Mail function Error!</div>
+								";
+							}
+						}
+				}
+		}				
+		wp_die();		
+	}
+
+	add_action('wp_ajax_send_email_to_all', 'send_email_to_all');
+	add_action('wp_ajax_nopriv_send_email_to_all', 'send_email_to_all');
 
 	add_filter( 'wp_mail_content_type', 'set_content_type' );
 	function set_content_type( $content_type ) {

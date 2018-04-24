@@ -55,5 +55,9 @@ th, td {
   background-color: grey;
 }
 
+.hide-message{
+  display: none;
+}
+
 .hover-background:hover{background-color:#f5f5f5}
 

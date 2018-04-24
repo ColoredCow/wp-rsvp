@@ -15,8 +15,11 @@ Address: '.$event_address.'
 
 See You in the event.
 ';        
-?>			
-<button type="button" class="btn btn-success btn-sm email">Email Template</button>
+?>
+<div class="container-fluid">			
+<button type="button" class="btn btn-success btn-sm email">Email Template</button>&nbsp;&nbsp;
+<button type="button" class="btn btn-primary btn-sm send-to-selected" id="<?php echo $event_id ?>">Send to selected</button>
+</div>
 <hr>
 <div id="email-temp" style="display:none;">
 	<div class="alert alert-success">
